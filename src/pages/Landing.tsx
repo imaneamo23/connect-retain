@@ -1,26 +1,36 @@
-import { ArrowRight, BarChart3, Brain, MessageSquare, Shield, TrendingUp, Users, Layers, Database, Cpu, LineChart, ChevronRight } from "lucide-react";
+import { ArrowRight, BarChart3, Brain, MessageSquare, Shield, TrendingUp, Users, Layers, Database, Cpu, LineChart, ChevronRight, Eye, MousePointer, ShoppingCart, Heart, Target, Zap, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import heroBg from "@/assets/hero-bg.jpg";
 
 const features = [
-  { icon: Brain, title: "AI Sentiment Analysis", desc: "Automatically analyze customer emotions from social media, reviews, and feedback using advanced NLP." },
-  { icon: TrendingUp, title: "Churn Prediction", desc: "Predict which customers are at risk of leaving with ML-powered behavior analysis." },
-  { icon: MessageSquare, title: "Smart Chatbot", desc: "AI chatbot that understands customer issues and suggests personalized retention solutions." },
-  { icon: Shield, title: "Retention Strategies", desc: "Get data-driven recommendations to improve satisfaction and reduce churn." },
+  { icon: Brain, title: "AI Sentiment Analysis", desc: "Analyze customer emotions from social media comments and reviews using advanced NLP models." },
+  { icon: TrendingUp, title: "Churn Prediction", desc: "Predict which customers are at risk of leaving using ML-powered behavior and engagement analysis." },
+  { icon: Target, title: "User Segmentation", desc: "Cluster customers into high-value, passive, and potential buyers using K-Means and behavioral features." },
+  { icon: Globe, title: "Attribution Modeling", desc: "Discover which social media platforms drive the most awareness, engagement, and revenue." },
+  { icon: LineChart, title: "Conversion Funnel", desc: "Track CTR, conversion rates, and CPA to understand how content translates into business results." },
+  { icon: Shield, title: "Retention Strategies", desc: "Get AI-powered recommendations to reduce churn and improve customer lifetime value." },
 ];
 
 const pipelineSteps = [
-  { icon: Database, title: "Data Collection", desc: "Gather customer feedback, social media posts, reviews, and behavioral data from multiple sources." },
-  { icon: Cpu, title: "NLP Processing", desc: "Analyze text using sentiment analysis, entity extraction, and topic modeling with transformer models." },
-  { icon: Brain, title: "ML Prediction", desc: "Feed processed data into churn prediction models that learn from historical patterns." },
-  { icon: LineChart, title: "Actionable Insights", desc: "Generate dashboards, alerts, and AI-powered recommendations for retention strategies." },
+  { icon: Database, title: "Data Collection", desc: "Gather social media posts, engagement metrics, user behavior data, and purchase history via APIs and scrapers." },
+  { icon: Cpu, title: "Preprocessing & Feature Engineering", desc: "Clean data, normalize metrics, and extract engagement rates, sentiment scores, interaction frequency, and NLP features." },
+  { icon: Brain, title: "AI Model Training", desc: "Build predictive models — conversion prediction, churn analysis, sentiment classification, and user clustering." },
+  { icon: LineChart, title: "Evaluation & Optimization", desc: "Evaluate with accuracy, precision/recall, confusion matrices. Optimize for real business outcomes, not vanity metrics." },
+  { icon: Target, title: "Segmentation & Attribution", desc: "Segment users into behavioral clusters. Attribute revenue to specific platforms and content types." },
+  { icon: Zap, title: "Actionable Insights", desc: "Generate dashboards with CAC vs LTV, conversion funnels, best-performing content, and strategic recommendations." },
 ];
 
 const stakeholders = [
-  { emoji: "🏢", title: "Business Owners", desc: "Monitor customer sentiment in real-time. Predict churn before it happens. Make data-driven retention decisions." },
+  { emoji: "🏢", title: "Business Owners", desc: "Monitor customer sentiment in real-time. Predict churn before it happens. Optimize marketing spend with data-driven attribution." },
   { emoji: "🛒", title: "Customers", desc: "Browse products, leave feedback, and interact with AI-powered support that truly understands your needs." },
-  { emoji: "📊", title: "Data Teams", desc: "Access comprehensive analytics, sentiment trends, and behavior models to power business intelligence." },
+  { emoji: "📊", title: "Data & Marketing Teams", desc: "Access comprehensive analytics — from awareness to conversion — and power business intelligence with predictive models." },
+];
+
+const metricsCategories = [
+  { icon: Eye, title: "Awareness", items: ["Reach", "Impressions", "Follower Growth Rate"], insight: "Are people discovering your brand?" },
+  { icon: MousePointer, title: "Engagement", items: ["Likes", "Comments", "Shares", "Saves", "Engagement Rate"], insight: "Does your content resonate?" },
+  { icon: ShoppingCart, title: "Conversion", items: ["Click-Through Rate", "Conversion Rate", "Cost per Acquisition"], insight: "Does content generate business results?" },
+  { icon: Heart, title: "Customer", items: ["Customer Acquisition Cost", "Lifetime Value", "Retention Rate"], insight: "Are you building a sustainable business?" },
 ];
 
 export default function Landing() {
@@ -36,6 +46,12 @@ export default function Landing() {
           </div>
           <span className="font-bold text-lg text-primary-foreground">SentiMind</span>
         </div>
+        <div className="hidden md:flex items-center gap-6 text-sm text-primary-foreground/70">
+          <button onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })} className="hover:text-primary-foreground transition-colors">About</button>
+          <button onClick={() => document.getElementById("metrics")?.scrollIntoView({ behavior: "smooth" })} className="hover:text-primary-foreground transition-colors">Metrics</button>
+          <button onClick={() => document.getElementById("pipeline")?.scrollIntoView({ behavior: "smooth" })} className="hover:text-primary-foreground transition-colors">Pipeline</button>
+          <button onClick={() => document.getElementById("stakeholders")?.scrollIntoView({ behavior: "smooth" })} className="hover:text-primary-foreground transition-colors">Stakeholders</button>
+        </div>
         <div className="flex items-center gap-3">
           <Button variant="ghost" onClick={() => navigate("/auth")} className="text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10">
             Sign In
@@ -48,22 +64,23 @@ export default function Landing() {
 
       {/* Hero */}
       <section className="relative min-h-[92vh] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0">
-          <img src={heroBg} alt="" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 gradient-hero opacity-90" />
+        <div className="absolute inset-0 gradient-hero" />
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute top-20 left-10 w-72 h-72 rounded-full bg-accent/20 blur-3xl" />
+          <div className="absolute bottom-20 right-10 w-96 h-96 rounded-full bg-accent/10 blur-3xl" />
         </div>
         <div className="relative z-10 max-w-4xl mx-auto text-center px-6 pt-16">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 bg-accent/10 mb-8 animate-fade-up">
-            <BarChart3 className="h-4 w-4 text-accent" />
-            <span className="text-sm text-accent">AI-Powered Customer Intelligence</span>
+            <Brain className="h-4 w-4 text-accent" />
+            <span className="text-sm text-accent">AI-Powered Social Media Intelligence</span>
           </div>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-primary-foreground leading-tight mb-6 animate-fade-up-delay">
-            Understand Your Customers.
+            From Social Data to
             <br />
-            <span className="text-gradient">Predict Their Next Move.</span>
+            <span className="text-gradient">Business Decisions.</span>
           </h1>
           <p className="text-lg text-primary-foreground/70 max-w-2xl mx-auto mb-10 animate-fade-up-delay-2">
-            SentiMind uses advanced AI to analyze customer sentiment, predict churn, and deliver intelligent solutions that keep your customers happy and loyal.
+            SentiMind collects social media data, analyzes customer behavior using AI, and transforms insights into actionable strategies — focusing on acquisition, conversion, retention, and revenue impact.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-up-delay-2">
             <Button size="lg" onClick={() => navigate("/auth")} className="bg-accent text-accent-foreground hover:bg-accent/90 px-8 py-6 text-base font-semibold rounded-xl">
@@ -80,23 +97,54 @@ export default function Landing() {
       <section id="about" className="py-24 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-6">About SentiMind</h2>
+          <p className="text-muted-foreground text-lg leading-relaxed max-w-3xl mx-auto mb-4">
+            SentiMind is an AI-driven system that goes beyond vanity metrics. Instead of tracking likes and views,
+            we focus on predicting real business outcomes — customer conversion, churn risk, and revenue impact.
+          </p>
           <p className="text-muted-foreground text-lg leading-relaxed max-w-3xl mx-auto">
-            SentiMind is an AI-driven platform that analyzes customer sentiment and behavior from social media data.
-            By combining Natural Language Processing and Machine Learning — including sentiment analysis, behavior modeling,
-            and predictive analytics — we help businesses understand their customers deeply, detect churn risk early,
-            and take proactive steps to improve retention and satisfaction.
+            By combining NLP sentiment analysis, ML-powered behavior modeling, user segmentation, and attribution analytics,
+            we help businesses understand their customers deeply and make data-driven decisions that drive growth.
           </p>
         </div>
       </section>
 
+      {/* Metrics Categories */}
+      <section id="metrics" className="py-24 px-6 bg-secondary/50">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold mb-4">Social Media Metrics That Matter</h2>
+            <p className="text-muted-foreground max-w-xl mx-auto">We track metrics across four key categories to give you a complete picture of business performance.</p>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {metricsCategories.map((cat) => (
+              <div key={cat.title} className="glass-card rounded-2xl p-6 hover:shadow-[var(--shadow-elevated)] transition-all duration-300 hover:-translate-y-1">
+                <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center mb-4">
+                  <cat.icon className="h-6 w-6 text-accent" />
+                </div>
+                <h3 className="font-semibold text-lg mb-3">{cat.title}</h3>
+                <ul className="space-y-1 mb-4">
+                  {cat.items.map((item) => (
+                    <li key={item} className="text-sm text-muted-foreground flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-accent" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <p className="text-xs text-accent font-medium italic">💡 {cat.insight}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Features */}
-      <section className="py-24 px-6 bg-secondary/50">
+      <section className="py-24 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-4">Powerful AI Features</h2>
             <p className="text-muted-foreground max-w-xl mx-auto">Everything you need to understand, predict, and improve customer relationships.</p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {features.map((f) => (
               <div key={f.title} className="glass-card rounded-2xl p-6 hover:shadow-[var(--shadow-elevated)] transition-all duration-300 hover:-translate-y-1">
                 <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center mb-4">
@@ -111,7 +159,7 @@ export default function Landing() {
       </section>
 
       {/* Stakeholders */}
-      <section id="stakeholders" className="py-24 px-6">
+      <section id="stakeholders" className="py-24 px-6 bg-secondary/50">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-4">Who It's For</h2>
@@ -130,16 +178,16 @@ export default function Landing() {
       </section>
 
       {/* Pipeline */}
-      <section id="pipeline" className="py-24 px-6 bg-secondary/50">
+      <section id="pipeline" className="py-24 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-4">Analytical Pipeline</h2>
-            <p className="text-muted-foreground max-w-xl mx-auto">How our AI processes and transforms raw data into actionable business intelligence.</p>
+            <p className="text-muted-foreground max-w-xl mx-auto">How our AI processes raw social media data into actionable business intelligence.</p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {pipelineSteps.map((step, i) => (
               <div key={step.title} className="relative">
-                <div className="glass-card rounded-2xl p-6 h-full">
+                <div className="glass-card rounded-2xl p-6 h-full hover:shadow-[var(--shadow-elevated)] transition-all duration-300">
                   <div className="w-8 h-8 rounded-full gradient-accent flex items-center justify-center text-accent-foreground font-bold text-sm mb-4">
                     {i + 1}
                   </div>
@@ -149,22 +197,51 @@ export default function Landing() {
                   <h3 className="font-semibold mb-2">{step.title}</h3>
                   <p className="text-sm text-muted-foreground">{step.desc}</p>
                 </div>
-                {i < pipelineSteps.length - 1 && (
-                  <ChevronRight className="hidden lg:block absolute top-1/2 -right-3 text-accent h-6 w-6 -translate-y-1/2" />
-                )}
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Stats */}
+      {/* Architecture diagram text */}
+      <section className="py-20 px-6 bg-secondary/50">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl font-bold mb-8">System Architecture</h2>
+          <div className="flex flex-wrap items-center justify-center gap-3 text-sm font-medium">
+            {["APIs / Scrapers", "Data Storage", "Preprocessing", "Feature Engineering", "AI Models", "Dashboard", "Business Insights"].map((step, i, arr) => (
+              <div key={step} className="flex items-center gap-3">
+                <span className="px-4 py-2 rounded-xl bg-accent/10 text-accent border border-accent/20">{step}</span>
+                {i < arr.length - 1 && <ChevronRight className="h-4 w-4 text-muted-foreground" />}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Final insight */}
       <section className="py-20 px-6">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="text-3xl font-bold mb-6">Beyond Vanity Metrics</h2>
+          <div className="grid sm:grid-cols-2 gap-6">
+            <div className="glass-card rounded-2xl p-6 border-destructive/20">
+              <p className="text-destructive font-semibold mb-2">❌ What most do</p>
+              <p className="text-muted-foreground text-sm">Predict likes, count followers, track impressions without business context.</p>
+            </div>
+            <div className="glass-card rounded-2xl p-6 border-accent/20">
+              <p className="text-accent font-semibold mb-2">✅ What we do</p>
+              <p className="text-muted-foreground text-sm">Predict business outcomes — conversion probability, churn risk, revenue attribution, and customer lifetime value.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Stats */}
+      <section className="py-20 px-6 bg-secondary/50">
         <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           {[
             { value: "95%", label: "Prediction Accuracy" },
             { value: "40%", label: "Churn Reduction" },
-            { value: "10K+", label: "Customers Analyzed" },
+            { value: "3x", label: "Comment→Purchase Lift" },
             { value: "24/7", label: "AI Monitoring" },
           ].map((s) => (
             <div key={s.label}>
@@ -177,7 +254,7 @@ export default function Landing() {
 
       {/* Footer */}
       <footer className="py-8 px-6 border-t text-center text-sm text-muted-foreground">
-        © 2026 SentiMind. AI-Powered Customer Intelligence Platform.
+        © 2026 SentiMind. AI-Powered Social Media Intelligence Platform.
       </footer>
     </div>
   );
