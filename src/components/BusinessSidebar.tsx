@@ -1,4 +1,4 @@
-import { BarChart3, TrendingUp, AlertTriangle, MessageSquare, ShoppingBag, Bot } from "lucide-react";
+import { BarChart3, TrendingUp, AlertTriangle, MessageSquare, ShoppingBag, Bot, Users, Globe, ShoppingCart, FileBarChart } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import {
   Sidebar,
@@ -12,18 +12,37 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 
-const items = [
+const mainItems = [
   { title: "Overview", url: "/dashboard", icon: BarChart3 },
-  { title: "Sentiment Analysis", url: "/dashboard/sentiment", icon: TrendingUp },
-  { title: "Churn Predictions", url: "/dashboard/churn", icon: AlertTriangle },
-  { title: "Customer Feedback", url: "/dashboard/feedback", icon: MessageSquare },
   { title: "Products", url: "/dashboard/products", icon: ShoppingBag },
   { title: "AI Chatbot", url: "/dashboard/chatbot", icon: Bot },
+];
+
+const analyticsItems = [
+  { title: "Sentiment Analysis", url: "/dashboard/sentiment", icon: TrendingUp },
+  { title: "Churn Predictions", url: "/dashboard/churn", icon: AlertTriangle },
+  { title: "User Segmentation", url: "/dashboard/segmentation", icon: Users },
+  { title: "Conversion Funnel", url: "/dashboard/funnel", icon: ShoppingCart },
+  { title: "Attribution", url: "/dashboard/attribution", icon: Globe },
+  { title: "Content Performance", url: "/dashboard/content", icon: FileBarChart },
+  { title: "Customer Feedback", url: "/dashboard/feedback", icon: MessageSquare },
 ];
 
 export function BusinessSidebar() {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
+
+  const renderItems = (items: typeof mainItems) =>
+    items.map((item) => (
+      <SidebarMenuItem key={item.title}>
+        <SidebarMenuButton asChild>
+          <NavLink to={item.url} end={item.url === "/dashboard"} className="hover:bg-sidebar-accent/50" activeClassName="bg-sidebar-accent text-sidebar-primary font-medium">
+            <item.icon className="mr-2 h-4 w-4" />
+            {!collapsed && <span>{item.title}</span>}
+          </NavLink>
+        </SidebarMenuButton>
+      </SidebarMenuItem>
+    ));
 
   return (
     <Sidebar collapsible="icon">
@@ -35,20 +54,15 @@ export function BusinessSidebar() {
           {!collapsed && <span className="font-bold text-lg text-sidebar-primary-foreground">SentiMind</span>}
         </div>
         <SidebarGroup>
+          <SidebarGroupLabel>Main</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>{renderItems(mainItems)}</SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <SidebarGroup>
           <SidebarGroupLabel>Analytics</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <NavLink to={item.url} end={item.url === "/dashboard"} className="hover:bg-sidebar-accent/50" activeClassName="bg-sidebar-accent text-sidebar-primary font-medium">
-                      <item.icon className="mr-2 h-4 w-4" />
-                      {!collapsed && <span>{item.title}</span>}
-                    </NavLink>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
+            <SidebarMenu>{renderItems(analyticsItems)}</SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
