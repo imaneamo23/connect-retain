@@ -41,7 +41,7 @@ export function AppSidebar() {
           {!collapsed && <span className="font-bold text-lg text-sidebar-primary-foreground">SentiMind</span>}
         </div>
 
-        <SidebarGroup defaultOpen>
+        <SidebarGroup>
           <SidebarGroupLabel>Analytics</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -59,7 +59,7 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        <SidebarGroup defaultOpen>
+        <SidebarGroup>
           <SidebarGroupLabel>Customer Portal</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
