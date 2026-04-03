@@ -4,6 +4,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { LogOut, User } from "lucide-react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function BusinessLayout() {
   const { signOut } = useAuth();
