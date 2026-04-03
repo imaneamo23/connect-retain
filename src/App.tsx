@@ -46,9 +46,6 @@ const App = () => (
               <Route path="sentiment" element={<SentimentAnalysis />} />
               <Route path="churn" element={<ChurnPredictions />} />
               <Route path="feedback" element={<CustomerFeedback />} />
-              <Route path="products" element={<BusinessProducts />} />
-              <Route path="products/:id" element={<BusinessProductDetail />} />
-              <Route path="chatbot" element={<ChatbotPage />} />
               <Route path="segmentation" element={<UserSegmentation />} />
               <Route path="attribution" element={<AttributionModeling />} />
               <Route path="funnel" element={<ConversionFunnel />} />

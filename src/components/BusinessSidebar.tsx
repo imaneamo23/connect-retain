@@ -14,8 +14,6 @@ import {
 
 const mainItems = [
   { title: "Overview", url: "/dashboard", icon: BarChart3 },
-  { title: "Products", url: "/dashboard/products", icon: ShoppingBag },
-  { title: "AI Chatbot", url: "/dashboard/chatbot", icon: Bot },
 ];
 
 const analyticsItems = [
