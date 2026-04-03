@@ -26,6 +26,7 @@ export default function BusinessLayout() {
               <h2 className="text-sm font-medium text-muted-foreground">Business Intelligence</h2>
             </div>
             <div className="flex items-center gap-2">
+              <ThemeToggle />
               <Button variant="ghost" size="sm" onClick={() => navigate("/dashboard/profile")} className="gap-1.5">
                 <User className="h-4 w-4" /> <span className="hidden sm:inline">Profile</span>
               </Button>

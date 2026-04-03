@@ -54,6 +54,7 @@ export default function Landing() {
           <button onClick={() => document.getElementById("stakeholders")?.scrollIntoView({ behavior: "smooth" })} className="hover:text-primary-foreground transition-colors">Stakeholders</button>
         </div>
         <div className="flex items-center gap-3">
+          <ThemeToggle className="text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10" />
           <Button variant="ghost" onClick={() => navigate("/auth")} className="text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10">
             Sign In
           </Button>
