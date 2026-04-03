@@ -38,7 +38,7 @@ export default function Landing() {
   return (
     <div className="min-h-screen">
       {/* Nav */}
-      <nav className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
+      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 max-w-7xl mx-auto bg-background/80 backdrop-blur-md border-b border-border/50">
         <div className="flex items-center gap-2">
           <div className="w-9 h-9 rounded-lg gradient-accent flex items-center justify-center">
             <BarChart3 className="h-5 w-5 text-accent-foreground" />
