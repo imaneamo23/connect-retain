@@ -1,4 +1,4 @@
-import { BarChart3, TrendingUp, AlertTriangle, MessageSquare, ShoppingBag, Bot, Users, Globe, ShoppingCart, FileBarChart } from "lucide-react";
+import { BarChart3, TrendingUp, AlertTriangle, MessageSquare, Users, Globe, ShoppingCart, FileBarChart } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import {
   Sidebar,
