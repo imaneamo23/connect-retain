@@ -9,7 +9,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { toast } from "sonner";
 
 export default function Profile() {
-  const { user, profile, role } = useAuth();
+  const { user, profile } = useAuth();
   const [fullName, setFullName] = useState(profile?.full_name || "");
   const [saving, setSaving] = useState(false);
 
