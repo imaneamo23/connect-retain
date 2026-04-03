@@ -1,6 +1,7 @@
 import { ArrowRight, BarChart3, Brain, Shield, TrendingUp, Layers, Database, Cpu, LineChart, ChevronRight, Eye, MousePointer, ShoppingCart, Heart, Target, Zap, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const features = [
   { icon: Brain, title: "AI Sentiment Analysis", desc: "Analyze customer emotions from social media comments and reviews using advanced NLP models." },
@@ -53,6 +54,7 @@ export default function Landing() {
           <button onClick={() => document.getElementById("stakeholders")?.scrollIntoView({ behavior: "smooth" })} className="hover:text-primary-foreground transition-colors">Stakeholders</button>
         </div>
         <div className="flex items-center gap-3">
+          <ThemeToggle className="text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10" />
           <Button variant="ghost" onClick={() => navigate("/auth")} className="text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary-foreground/10">
             Sign In
           </Button>
