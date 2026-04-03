@@ -60,6 +60,7 @@ export default function Landing() {
             Get Started
           </Button>
         </div>
+        </div>
       </nav>
 
       {/* Hero */}
