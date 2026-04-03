@@ -19,7 +19,7 @@ export default function BusinessLayout() {
       <div className="min-h-screen flex w-full">
         <BusinessSidebar />
         <div className="flex-1 flex flex-col">
-          <header className="h-14 flex items-center justify-between border-b px-4 bg-card/50 backdrop-blur-sm">
+          <header className="sticky top-0 z-40 h-14 flex items-center justify-between border-b px-4 bg-card/80 backdrop-blur-md">
             <div className="flex items-center">
               <SidebarTrigger className="mr-4" />
               <h2 className="text-sm font-medium text-muted-foreground">Business Intelligence</h2>
