@@ -3,11 +3,10 @@ import { useAuth } from "@/contexts/AuthContext";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  requiredRole?: "customer" | "business_owner";
 }
 
-export default function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) {
-  const { user, role, loading } = useAuth();
+export default function ProtectedRoute({ children }: ProtectedRouteProps) {
+  const { user, loading } = useAuth();
 
   if (loading) {
     return (
@@ -18,9 +17,6 @@ export default function ProtectedRoute({ children, requiredRole }: ProtectedRout
   }
 
   if (!user) return <Navigate to="/auth" replace />;
-  if (requiredRole && role !== requiredRole) {
-    return <Navigate to={role === "business_owner" ? "/dashboard" : "/customer"} replace />;
-  }
 
   return <>{children}</>;
 }

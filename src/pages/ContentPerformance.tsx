@@ -1,10 +1,41 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart3, Video, Image, FileText, TrendingUp } from "lucide-react";
+import { Video, Image, FileText, TrendingUp } from "lucide-react";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, AreaChart, Area } from "recharts";
 
+// TODO: Replace with API call — e.g. fetch("/api/content/types")
 const contentTypes = [
-  { icon: Video, label: "Videos", note: "Higher CTR typically", value: "—" },
-  { icon: Image, label: "Images", note: "Strong engagement", value: "—" },
-  { icon: FileText, label: "Text Posts", note: "Comment-driven", value: "—" },
+  { icon: Video, label: "Videos", note: "Higher CTR typically", value: "5.2%", engagement: "8.4%" },
+  { icon: Image, label: "Images", note: "Strong engagement", value: "3.8%", engagement: "6.1%" },
+  { icon: FileText, label: "Text Posts", note: "Comment-driven", value: "2.1%", engagement: "4.3%" },
+];
+
+// TODO: Replace with API call — e.g. fetch("/api/content/comparison")
+const comparisonData = [
+  { metric: "CTR", video: 5.2, image: 3.8, text: 2.1 },
+  { metric: "Eng. Rate", video: 8.4, image: 6.1, text: 4.3 },
+  { metric: "Conv. Rate", video: 3.1, image: 2.4, text: 1.8 },
+  { metric: "Save Rate", video: 4.5, image: 5.2, text: 2.0 },
+];
+
+// TODO: Replace with API call — e.g. fetch("/api/content/trending-topics")
+const trendingTopics = [
+  { topic: "#ProductReview", posts: 342, engagement: "7.2%", sentiment: 88 },
+  { topic: "#HowTo", posts: 287, engagement: "6.8%", sentiment: 92 },
+  { topic: "#BehindTheScenes", posts: 198, engagement: "8.1%", sentiment: 85 },
+  { topic: "#CustomerStory", posts: 156, engagement: "9.3%", sentiment: 94 },
+  { topic: "#SaleAlert", posts: 412, engagement: "5.4%", sentiment: 72 },
+];
+
+// TODO: Replace with API call — e.g. fetch("/api/content/timeline")
+const timelineData = [
+  { week: "W1", videos: 120, images: 85, text: 45 },
+  { week: "W2", videos: 135, images: 92, text: 40 },
+  { week: "W3", videos: 128, images: 98, text: 52 },
+  { week: "W4", videos: 150, images: 88, text: 38 },
+  { week: "W5", videos: 165, images: 105, text: 48 },
+  { week: "W6", videos: 172, images: 110, text: 55 },
+  { week: "W7", videos: 180, images: 102, text: 50 },
+  { week: "W8", videos: 195, images: 115, text: 42 },
 ];
 
 export default function ContentPerformance() {
@@ -24,8 +55,16 @@ export default function ContentPerformance() {
               </div>
               <h3 className="font-semibold text-sm">{ct.label}</h3>
               <p className="text-xs text-muted-foreground">{ct.note}</p>
-              <div className="mt-3 text-2xl font-bold text-muted-foreground">{ct.value}</div>
-              <p className="text-xs text-muted-foreground">Avg. engagement rate</p>
+              <div className="mt-3 flex items-baseline gap-3">
+                <div>
+                  <div className="text-2xl font-bold">{ct.value}</div>
+                  <p className="text-xs text-muted-foreground">Avg. CTR</p>
+                </div>
+                <div>
+                  <div className="text-lg font-semibold text-success">{ct.engagement}</div>
+                  <p className="text-xs text-muted-foreground">Eng. Rate</p>
+                </div>
+              </div>
             </CardContent>
           </Card>
         ))}
@@ -37,13 +76,17 @@ export default function ContentPerformance() {
             <CardTitle className="text-base">Content Type Comparison</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="h-48 flex items-center justify-center border-2 border-dashed border-border rounded-xl">
-              <div className="text-center text-muted-foreground">
-                <BarChart3 className="h-8 w-8 mx-auto mb-2 opacity-40" />
-                <p className="text-sm font-medium">Connect data source</p>
-                <p className="text-xs">Video vs Image vs Text performance comparison</p>
-              </div>
-            </div>
+            <ResponsiveContainer width="100%" height={240}>
+              <BarChart data={comparisonData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                <XAxis dataKey="metric" stroke="hsl(var(--muted-foreground))" fontSize={12} />
+                <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} />
+                <Tooltip contentStyle={{ backgroundColor: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "8px", fontSize: "12px" }} />
+                <Bar dataKey="video" fill="hsl(var(--accent))" name="Video" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="image" fill="hsl(152, 56%, 45%)" name="Image" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="text" fill="hsl(45, 93%, 47%)" name="Text" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
           </CardContent>
         </Card>
         <Card className="glass-card">
@@ -51,12 +94,24 @@ export default function ContentPerformance() {
             <CardTitle className="text-base">Trending Topics</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="h-48 flex items-center justify-center border-2 border-dashed border-border rounded-xl">
-              <div className="text-center text-muted-foreground">
-                <TrendingUp className="h-8 w-8 mx-auto mb-2 opacity-40" />
-                <p className="text-sm font-medium">Connect data source</p>
-                <p className="text-xs">Topic trends and hashtag performance here</p>
-              </div>
+            <div className="space-y-3">
+              {trendingTopics.map((t) => (
+                <div key={t.topic} className="flex items-center justify-between p-3 rounded-lg bg-secondary/50">
+                  <div>
+                    <p className="font-medium text-sm">{t.topic}</p>
+                    <p className="text-xs text-muted-foreground">{t.posts} posts · {t.engagement} eng.</p>
+                  </div>
+                  <div className="text-right">
+                    <div className="flex items-center gap-1">
+                      <div className="w-16 h-2 rounded-full bg-secondary">
+                        <div className={`h-full rounded-full ${t.sentiment >= 85 ? "bg-success" : t.sentiment >= 70 ? "bg-warning" : "bg-destructive"}`} style={{ width: `${t.sentiment}%` }} />
+                      </div>
+                      <span className="text-xs font-medium w-8">{t.sentiment}%</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground">sentiment</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </CardContent>
         </Card>
@@ -64,16 +119,30 @@ export default function ContentPerformance() {
 
       <Card className="glass-card">
         <CardHeader>
-          <CardTitle className="text-base">Time Series Analysis</CardTitle>
+          <CardTitle className="text-base">Time Series Analysis — Engagement by Content Type</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-48 flex items-center justify-center border-2 border-dashed border-border rounded-xl">
-            <div className="text-center text-muted-foreground">
-              <TrendingUp className="h-8 w-8 mx-auto mb-2 opacity-40" />
-              <p className="text-sm font-medium">Connect data source</p>
-              <p className="text-xs">Content performance trends over time</p>
-            </div>
-          </div>
+          <ResponsiveContainer width="100%" height={280}>
+            <AreaChart data={timelineData}>
+              <defs>
+                <linearGradient id="videoGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="hsl(var(--accent))" stopOpacity={0.3} />
+                  <stop offset="95%" stopColor="hsl(var(--accent))" stopOpacity={0} />
+                </linearGradient>
+                <linearGradient id="imageGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="hsl(152, 56%, 45%)" stopOpacity={0.3} />
+                  <stop offset="95%" stopColor="hsl(152, 56%, 45%)" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+              <XAxis dataKey="week" stroke="hsl(var(--muted-foreground))" fontSize={12} />
+              <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} />
+              <Tooltip contentStyle={{ backgroundColor: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "8px", fontSize: "12px" }} />
+              <Area type="monotone" dataKey="videos" stroke="hsl(var(--accent))" fill="url(#videoGrad)" strokeWidth={2} name="Videos" />
+              <Area type="monotone" dataKey="images" stroke="hsl(152, 56%, 45%)" fill="url(#imageGrad)" strokeWidth={2} name="Images" />
+              <Line type="monotone" dataKey="text" stroke="hsl(45, 93%, 47%)" strokeWidth={2} dot={false} name="Text" />
+            </AreaChart>
+          </ResponsiveContainer>
         </CardContent>
       </Card>
     </div>

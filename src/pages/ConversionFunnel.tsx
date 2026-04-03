@@ -1,11 +1,30 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ShoppingCart, MousePointer, Eye, DollarSign } from "lucide-react";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, LineChart, Line } from "recharts";
 
+// TODO: Replace with API call — e.g. fetch("/api/funnel/overview")
 const funnelSteps = [
-  { icon: Eye, label: "Impressions", value: "—", note: "Total content views" },
-  { icon: MousePointer, label: "Clicks", value: "—", note: "CTR from content" },
-  { icon: ShoppingCart, label: "Conversions", value: "—", note: "Click → Purchase" },
-  { icon: DollarSign, label: "Revenue", value: "—", note: "Total revenue generated" },
+  { icon: Eye, label: "Impressions", value: "342.1K", note: "Total content views", conversion: "100%" },
+  { icon: MousePointer, label: "Clicks", value: "10,947", note: "CTR: 3.2%", conversion: "3.2%" },
+  { icon: ShoppingCart, label: "Conversions", value: "2,299", note: "Conv Rate: 2.1%", conversion: "21%" },
+  { icon: DollarSign, label: "Revenue", value: "$90,500", note: "Avg order: $39.40", conversion: "—" },
+];
+
+// TODO: Replace with API call — e.g. fetch("/api/funnel/visualization")
+const funnelData = [
+  { stage: "Impressions", value: 342100, fill: "hsl(var(--accent))" },
+  { stage: "Clicks", value: 10947, fill: "hsl(45, 93%, 47%)" },
+  { stage: "Add to Cart", value: 5420, fill: "hsl(152, 56%, 45%)" },
+  { stage: "Purchase", value: 2299, fill: "hsl(0, 84%, 60%)" },
+];
+
+// TODO: Replace with API call — e.g. fetch("/api/funnel/top-content")
+const topContent = [
+  { title: "Summer Sale Video", type: "Video", ctr: "5.2%", conversions: 342, revenue: "$13,476" },
+  { title: "Product Tutorial Reel", type: "Video", ctr: "4.8%", conversions: 287, revenue: "$11,308" },
+  { title: "Customer Story Post", type: "Image", ctr: "3.9%", conversions: 198, revenue: "$7,801" },
+  { title: "Behind the Scenes", type: "Image", ctr: "3.4%", conversions: 156, revenue: "$6,146" },
+  { title: "Tips & Tricks Thread", type: "Text", ctr: "2.8%", conversions: 124, revenue: "$4,886" },
 ];
 
 export default function ConversionFunnel() {
@@ -24,7 +43,7 @@ export default function ConversionFunnel() {
                 <step.icon className="h-5 w-5 text-accent" />
               </div>
               <p className="text-xs text-muted-foreground">{step.note}</p>
-              <p className="text-2xl font-bold mt-1 text-muted-foreground">{step.value}</p>
+              <p className="text-2xl font-bold mt-1">{step.value}</p>
               <p className="text-sm font-medium mt-1">{step.label}</p>
             </CardContent>
           </Card>
@@ -36,13 +55,19 @@ export default function ConversionFunnel() {
           <CardTitle className="text-base">Funnel Visualization</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-64 flex items-center justify-center border-2 border-dashed border-border rounded-xl">
-            <div className="text-center text-muted-foreground">
-              <ShoppingCart className="h-8 w-8 mx-auto mb-2 opacity-40" />
-              <p className="text-sm font-medium">Connect data source</p>
-              <p className="text-xs">Conversion funnel chart will appear here</p>
-            </div>
-          </div>
+          <ResponsiveContainer width="100%" height={280}>
+            <BarChart data={funnelData} layout="vertical">
+              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+              <XAxis type="number" stroke="hsl(var(--muted-foreground))" fontSize={12} />
+              <YAxis dataKey="stage" type="category" stroke="hsl(var(--muted-foreground))" fontSize={12} width={100} />
+              <Tooltip contentStyle={{ backgroundColor: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "8px", fontSize: "12px" }} formatter={(value: number) => value.toLocaleString()} />
+              <Bar dataKey="value" radius={[0, 4, 4, 0]}>
+                {funnelData.map((entry, index) => (
+                  <Cell key={index} fill={entry.fill} />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
         </CardContent>
       </Card>
 
@@ -51,12 +76,29 @@ export default function ConversionFunnel() {
           <CardTitle className="text-base">Best-Performing Content</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-48 flex items-center justify-center border-2 border-dashed border-border rounded-xl">
-            <div className="text-center text-muted-foreground">
-              <Eye className="h-8 w-8 mx-auto mb-2 opacity-40" />
-              <p className="text-sm font-medium">Connect data source</p>
-              <p className="text-xs">Content performance ranking will appear here</p>
-            </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-border">
+                  <th className="text-left py-3 px-2 font-medium text-muted-foreground">Content</th>
+                  <th className="text-left py-3 px-2 font-medium text-muted-foreground">Type</th>
+                  <th className="text-right py-3 px-2 font-medium text-muted-foreground">CTR</th>
+                  <th className="text-right py-3 px-2 font-medium text-muted-foreground">Conversions</th>
+                  <th className="text-right py-3 px-2 font-medium text-muted-foreground">Revenue</th>
+                </tr>
+              </thead>
+              <tbody>
+                {topContent.map((c) => (
+                  <tr key={c.title} className="border-b border-border/50 hover:bg-secondary/50 transition-colors">
+                    <td className="py-3 px-2 font-medium">{c.title}</td>
+                    <td className="py-3 px-2 text-muted-foreground">{c.type}</td>
+                    <td className="py-3 px-2 text-right">{c.ctr}</td>
+                    <td className="py-3 px-2 text-right">{c.conversions}</td>
+                    <td className="py-3 px-2 text-right font-medium">{c.revenue}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </CardContent>
       </Card>

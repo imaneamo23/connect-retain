@@ -1,4 +1,4 @@
-import { ArrowRight, BarChart3, Brain, MessageSquare, Shield, TrendingUp, Users, Layers, Database, Cpu, LineChart, ChevronRight, Eye, MousePointer, ShoppingCart, Heart, Target, Zap, Globe } from "lucide-react";
+import { ArrowRight, BarChart3, Brain, Shield, TrendingUp, Layers, Database, Cpu, LineChart, ChevronRight, Eye, MousePointer, ShoppingCart, Heart, Target, Zap, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 
@@ -22,7 +22,6 @@ const pipelineSteps = [
 
 const stakeholders = [
   { emoji: "🏢", title: "Business Owners", desc: "Monitor customer sentiment in real-time. Predict churn before it happens. Optimize marketing spend with data-driven attribution." },
-  { emoji: "🛒", title: "Customers", desc: "Browse products, leave feedback, and interact with AI-powered support that truly understands your needs." },
   { emoji: "📊", title: "Data & Marketing Teams", desc: "Access comprehensive analytics — from awareness to conversion — and power business intelligence with predictive models." },
 ];
 
@@ -163,9 +162,9 @@ export default function Landing() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-4">Who It's For</h2>
-            <p className="text-muted-foreground max-w-xl mx-auto">SentiMind serves multiple stakeholders in the customer experience ecosystem.</p>
+            <p className="text-muted-foreground max-w-xl mx-auto">SentiMind serves key stakeholders in the business intelligence ecosystem.</p>
           </div>
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {stakeholders.map((s) => (
               <div key={s.title} className="glass-card rounded-2xl p-8 text-center hover:shadow-[var(--shadow-elevated)] transition-all duration-300">
                 <div className="text-4xl mb-4">{s.emoji}</div>

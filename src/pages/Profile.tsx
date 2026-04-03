@@ -9,7 +9,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { toast } from "sonner";
 
 export default function Profile() {
-  const { user, profile, role } = useAuth();
+  const { user, profile } = useAuth();
   const [fullName, setFullName] = useState(profile?.full_name || "");
   const [saving, setSaving] = useState(false);
 
@@ -38,7 +38,7 @@ export default function Profile() {
             <AvatarFallback className="bg-accent text-accent-foreground text-2xl">{initials}</AvatarFallback>
           </Avatar>
           <CardTitle className="text-lg">{fullName || "User"}</CardTitle>
-          <p className="text-sm text-muted-foreground capitalize">{role?.replace("_", " ") || "User"}</p>
+          <p className="text-sm text-muted-foreground">Business Owner</p>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
