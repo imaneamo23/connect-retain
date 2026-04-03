@@ -12,9 +12,6 @@ import Dashboard from "./pages/Dashboard";
 import SentimentAnalysis from "./pages/SentimentAnalysis";
 import ChurnPredictions from "./pages/ChurnPredictions";
 import CustomerFeedback from "./pages/CustomerFeedback";
-import BusinessProducts from "./pages/BusinessProducts";
-import BusinessProductDetail from "./pages/BusinessProductDetail";
-import ChatbotPage from "./pages/ChatbotPage";
 import UserSegmentation from "./pages/UserSegmentation";
 import AttributionModeling from "./pages/AttributionModeling";
 import ConversionFunnel from "./pages/ConversionFunnel";
@@ -49,9 +46,6 @@ const App = () => (
               <Route path="sentiment" element={<SentimentAnalysis />} />
               <Route path="churn" element={<ChurnPredictions />} />
               <Route path="feedback" element={<CustomerFeedback />} />
-              <Route path="products" element={<BusinessProducts />} />
-              <Route path="products/:id" element={<BusinessProductDetail />} />
-              <Route path="chatbot" element={<ChatbotPage />} />
               <Route path="segmentation" element={<UserSegmentation />} />
               <Route path="attribution" element={<AttributionModeling />} />
               <Route path="funnel" element={<ConversionFunnel />} />

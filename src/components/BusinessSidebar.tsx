@@ -1,4 +1,4 @@
-import { BarChart3, TrendingUp, AlertTriangle, MessageSquare, ShoppingBag, Bot, Users, Globe, ShoppingCart, FileBarChart } from "lucide-react";
+import { BarChart3, TrendingUp, AlertTriangle, MessageSquare, Users, Globe, ShoppingCart, FileBarChart } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import {
   Sidebar,
@@ -14,8 +14,6 @@ import {
 
 const mainItems = [
   { title: "Overview", url: "/dashboard", icon: BarChart3 },
-  { title: "Products", url: "/dashboard/products", icon: ShoppingBag },
-  { title: "AI Chatbot", url: "/dashboard/chatbot", icon: Bot },
 ];
 
 const analyticsItems = [
