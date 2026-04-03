@@ -14,7 +14,6 @@ export default function Auth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
-  const [role, setRole] = useState<"customer" | "business_owner">("customer");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -27,7 +26,7 @@ export default function Auth() {
           email,
           password,
           options: {
-            data: { full_name: fullName, role },
+            data: { full_name: fullName, role: "business_owner" },
             emailRedirectTo: window.location.origin,
           },
         });
@@ -36,7 +35,6 @@ export default function Auth() {
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        // Navigation handled by auth state change in App
       }
     } catch (error: any) {
       toast.error(error.message);
@@ -63,35 +61,10 @@ export default function Auth() {
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               {isSignUp && (
-                <>
-                  <div className="space-y-2">
-                    <Label htmlFor="name">Full Name</Label>
-                    <Input id="name" value={fullName} onChange={(e) => setFullName(e.target.value)} placeholder="John Doe" required />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>I am a...</Label>
-                    <div className="grid grid-cols-2 gap-3">
-                      <button
-                        type="button"
-                        onClick={() => setRole("customer")}
-                        className={`p-3 rounded-xl border text-sm font-medium transition-all ${
-                          role === "customer" ? "border-accent bg-accent/10 text-accent" : "border-border hover:border-accent/50"
-                        }`}
-                      >
-                        🛒 Customer
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setRole("business_owner")}
-                        className={`p-3 rounded-xl border text-sm font-medium transition-all ${
-                          role === "business_owner" ? "border-accent bg-accent/10 text-accent" : "border-border hover:border-accent/50"
-                        }`}
-                      >
-                        📊 Business Owner
-                      </button>
-                    </div>
-                  </div>
-                </>
+                <div className="space-y-2">
+                  <Label htmlFor="name">Full Name</Label>
+                  <Input id="name" value={fullName} onChange={(e) => setFullName(e.target.value)} placeholder="John Doe" required />
+                </div>
               )}
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>

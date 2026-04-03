@@ -1,12 +1,33 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, Crown, Eye, ShoppingCart } from "lucide-react";
+import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, Cell } from "recharts";
 
+// TODO: Replace with API call — e.g. fetch("/api/segmentation/clusters")
 const segments = [
-  { icon: Crown, title: "High-Value Customers", desc: "Frequent buyers with high LTV. Engage regularly and drive revenue.", color: "text-accent", bg: "bg-accent/10" },
-  { icon: Eye, title: "Passive Users", desc: "Low engagement, rarely interact. At risk of becoming inactive.", color: "text-warning", bg: "bg-warning/10" },
-  { icon: ShoppingCart, title: "Potential Buyers", desc: "High engagement but no purchase yet. Strong conversion candidates.", color: "text-success", bg: "bg-success/10" },
-  { icon: Users, title: "Churned Users", desc: "Previously active users who stopped engaging. Reactivation targets.", color: "text-destructive", bg: "bg-destructive/10" },
+  { icon: Crown, title: "High-Value Customers", desc: "Frequent buyers with high LTV. Engage regularly and drive revenue.", color: "text-accent", bg: "bg-accent/10", count: 1243, pct: "31%" },
+  { icon: Eye, title: "Passive Users", desc: "Low engagement, rarely interact. At risk of becoming inactive.", color: "text-warning", bg: "bg-warning/10", count: 892, pct: "22%" },
+  { icon: ShoppingCart, title: "Potential Buyers", desc: "High engagement but no purchase yet. Strong conversion candidates.", color: "text-success", bg: "bg-success/10", count: 1056, pct: "26%" },
+  { icon: Users, title: "Churned Users", desc: "Previously active users who stopped engaging. Reactivation targets.", color: "text-destructive", bg: "bg-destructive/10", count: 834, pct: "21%" },
 ];
+
+// TODO: Replace with API call — e.g. fetch("/api/segmentation/scatter")
+const clusterData = [
+  { x: 20, y: 80, cluster: "High-Value" }, { x: 25, y: 75, cluster: "High-Value" }, { x: 30, y: 90, cluster: "High-Value" }, { x: 15, y: 85, cluster: "High-Value" },
+  { x: 60, y: 20, cluster: "Passive" }, { x: 65, y: 15, cluster: "Passive" }, { x: 70, y: 25, cluster: "Passive" }, { x: 55, y: 10, cluster: "Passive" },
+  { x: 40, y: 60, cluster: "Potential" }, { x: 45, y: 55, cluster: "Potential" }, { x: 35, y: 65, cluster: "Potential" }, { x: 50, y: 50, cluster: "Potential" },
+  { x: 80, y: 10, cluster: "Churned" }, { x: 85, y: 5, cluster: "Churned" }, { x: 90, y: 15, cluster: "Churned" }, { x: 75, y: 8, cluster: "Churned" },
+];
+
+// TODO: Replace with API call — e.g. fetch("/api/segmentation/behaviors")
+const behaviorData = [
+  { action: "Comment", conversionLift: 3.2 },
+  { action: "Share", conversionLift: 2.8 },
+  { action: "Save", conversionLift: 2.5 },
+  { action: "Like", conversionLift: 1.4 },
+  { action: "View Only", conversionLift: 0.3 },
+];
+
+const CLUSTER_COLORS = ["hsl(var(--accent))", "hsl(45, 93%, 47%)", "hsl(152, 56%, 45%)", "hsl(0, 84%, 60%)"];
 
 export default function UserSegmentation() {
   return (
@@ -25,8 +46,10 @@ export default function UserSegmentation() {
               </div>
               <h3 className="font-semibold text-sm mb-1">{s.title}</h3>
               <p className="text-xs text-muted-foreground">{s.desc}</p>
-              <div className="mt-4 text-2xl font-bold text-muted-foreground">—</div>
-              <p className="text-xs text-muted-foreground">Connect data source</p>
+              <div className="mt-4 flex items-baseline gap-2">
+                <span className="text-2xl font-bold">{s.count.toLocaleString()}</span>
+                <span className="text-xs text-muted-foreground">({s.pct})</span>
+              </div>
             </CardContent>
           </Card>
         ))}
@@ -34,31 +57,38 @@ export default function UserSegmentation() {
 
       <Card className="glass-card">
         <CardHeader>
-          <CardTitle className="text-base">Cluster Visualization</CardTitle>
+          <CardTitle className="text-base">Cluster Visualization (K-Means)</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-64 flex items-center justify-center border-2 border-dashed border-border rounded-xl">
-            <div className="text-center text-muted-foreground">
-              <Users className="h-8 w-8 mx-auto mb-2 opacity-40" />
-              <p className="text-sm font-medium">Connect data source</p>
-              <p className="text-xs">K-Means cluster scatter plot will appear here</p>
-            </div>
-          </div>
+          <ResponsiveContainer width="100%" height={300}>
+            <ScatterChart>
+              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+              <XAxis dataKey="x" name="Recency" stroke="hsl(var(--muted-foreground))" fontSize={12} label={{ value: "Days Since Last Action", position: "insideBottom", offset: -5, fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
+              <YAxis dataKey="y" name="Engagement" stroke="hsl(var(--muted-foreground))" fontSize={12} label={{ value: "Engagement Score", angle: -90, position: "insideLeft", fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
+              <Tooltip contentStyle={{ backgroundColor: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "8px", fontSize: "12px" }} />
+              <Scatter data={clusterData.filter(d => d.cluster === "High-Value")} fill={CLUSTER_COLORS[0]} name="High-Value" />
+              <Scatter data={clusterData.filter(d => d.cluster === "Passive")} fill={CLUSTER_COLORS[1]} name="Passive" />
+              <Scatter data={clusterData.filter(d => d.cluster === "Potential")} fill={CLUSTER_COLORS[2]} name="Potential" />
+              <Scatter data={clusterData.filter(d => d.cluster === "Churned")} fill={CLUSTER_COLORS[3]} name="Churned" />
+            </ScatterChart>
+          </ResponsiveContainer>
         </CardContent>
       </Card>
 
       <Card className="glass-card">
         <CardHeader>
-          <CardTitle className="text-base">Behavioral Patterns</CardTitle>
+          <CardTitle className="text-base">Behavioral Patterns — Conversion Lift by Action</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-48 flex items-center justify-center border-2 border-dashed border-border rounded-xl">
-            <div className="text-center text-muted-foreground">
-              <Eye className="h-8 w-8 mx-auto mb-2 opacity-40" />
-              <p className="text-sm font-medium">Connect data source</p>
-              <p className="text-xs">Users who comment → 3x more likely to buy, and more insights here</p>
-            </div>
-          </div>
+          <ResponsiveContainer width="100%" height={240}>
+            <BarChart data={behaviorData} layout="vertical">
+              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+              <XAxis type="number" stroke="hsl(var(--muted-foreground))" fontSize={12} label={{ value: "Conversion Lift (x)", position: "insideBottom", offset: -5, fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
+              <YAxis dataKey="action" type="category" stroke="hsl(var(--muted-foreground))" fontSize={12} width={80} />
+              <Tooltip contentStyle={{ backgroundColor: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "8px", fontSize: "12px" }} />
+              <Bar dataKey="conversionLift" fill="hsl(var(--accent))" radius={[0, 4, 4, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
         </CardContent>
       </Card>
     </div>

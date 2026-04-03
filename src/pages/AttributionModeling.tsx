@@ -1,11 +1,29 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Globe, TrendingUp, DollarSign, BarChart3 } from "lucide-react";
+import { TrendingUp, DollarSign } from "lucide-react";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Sankey, Rectangle } from "recharts";
 
+// TODO: Replace with API call — e.g. fetch("/api/attribution/platforms")
 const platforms = [
-  { name: "Instagram", role: "High conversion", icon: "📸" },
-  { name: "TikTok", role: "High awareness", icon: "🎵" },
-  { name: "Twitter/X", role: "Engagement driver", icon: "🐦" },
-  { name: "Facebook", role: "Broad reach", icon: "📘" },
+  { name: "Instagram", role: "High conversion", icon: "📸", revenue: "$34,200", pct: "38%" },
+  { name: "TikTok", role: "High awareness", icon: "🎵", revenue: "$22,800", pct: "25%" },
+  { name: "Twitter/X", role: "Engagement driver", icon: "🐦", revenue: "$18,100", pct: "20%" },
+  { name: "Facebook", role: "Broad reach", icon: "📘", revenue: "$15,400", pct: "17%" },
+];
+
+// TODO: Replace with API call — e.g. fetch("/api/attribution/revenue-by-platform")
+const revenueData = [
+  { platform: "Instagram", awareness: 15000, engagement: 22000, conversion: 34200 },
+  { platform: "TikTok", awareness: 38000, engagement: 18000, conversion: 22800 },
+  { platform: "Twitter/X", awareness: 12000, engagement: 28000, conversion: 18100 },
+  { platform: "Facebook", awareness: 25000, engagement: 14000, conversion: 15400 },
+];
+
+// TODO: Replace with API call — e.g. fetch("/api/attribution/funnel-flow")
+const flowData = [
+  { stage: "TikTok Traffic", value: 38000, fill: "hsl(var(--accent))" },
+  { stage: "Insta Traffic", value: 22000, fill: "hsl(152, 56%, 45%)" },
+  { stage: "Engaged Users", value: 28000, fill: "hsl(45, 93%, 47%)" },
+  { stage: "Conversions", value: 8400, fill: "hsl(0, 84%, 60%)" },
 ];
 
 export default function AttributionModeling() {
@@ -23,8 +41,8 @@ export default function AttributionModeling() {
               <div className="text-3xl mb-3">{p.icon}</div>
               <h3 className="font-semibold text-sm">{p.name}</h3>
               <p className="text-xs text-muted-foreground mt-1">{p.role}</p>
-              <div className="mt-3 text-xl font-bold text-muted-foreground">—</div>
-              <p className="text-xs text-muted-foreground">Revenue attributed</p>
+              <div className="mt-3 text-xl font-bold">{p.revenue}</div>
+              <p className="text-xs text-muted-foreground">Revenue attributed ({p.pct})</p>
             </CardContent>
           </Card>
         ))}
@@ -36,13 +54,17 @@ export default function AttributionModeling() {
             <CardTitle className="text-base">Platform Revenue Attribution</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="h-48 flex items-center justify-center border-2 border-dashed border-border rounded-xl">
-              <div className="text-center text-muted-foreground">
-                <DollarSign className="h-8 w-8 mx-auto mb-2 opacity-40" />
-                <p className="text-sm font-medium">Connect data source</p>
-                <p className="text-xs">Revenue by platform chart will appear here</p>
-              </div>
-            </div>
+            <ResponsiveContainer width="100%" height={280}>
+              <BarChart data={revenueData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                <XAxis dataKey="platform" stroke="hsl(var(--muted-foreground))" fontSize={12} />
+                <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} />
+                <Tooltip contentStyle={{ backgroundColor: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "8px", fontSize: "12px" }} />
+                <Bar dataKey="awareness" stackId="a" fill="hsl(var(--accent))" name="Awareness" />
+                <Bar dataKey="engagement" stackId="a" fill="hsl(45, 93%, 47%)" name="Engagement" />
+                <Bar dataKey="conversion" stackId="a" fill="hsl(152, 56%, 45%)" name="Conversion" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
           </CardContent>
         </Card>
         <Card className="glass-card">
@@ -50,13 +72,19 @@ export default function AttributionModeling() {
             <CardTitle className="text-base">Traffic → Conversion Flow</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="h-48 flex items-center justify-center border-2 border-dashed border-border rounded-xl">
-              <div className="text-center text-muted-foreground">
-                <TrendingUp className="h-8 w-8 mx-auto mb-2 opacity-40" />
-                <p className="text-sm font-medium">Connect data source</p>
-                <p className="text-xs">TikTok → awareness, Instagram → selling insights here</p>
-              </div>
-            </div>
+            <ResponsiveContainer width="100%" height={280}>
+              <BarChart data={flowData} layout="vertical">
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                <XAxis type="number" stroke="hsl(var(--muted-foreground))" fontSize={12} />
+                <YAxis dataKey="stage" type="category" stroke="hsl(var(--muted-foreground))" fontSize={12} width={100} />
+                <Tooltip contentStyle={{ backgroundColor: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "8px", fontSize: "12px" }} />
+                <Bar dataKey="value" radius={[0, 4, 4, 0]}>
+                  {flowData.map((entry, index) => (
+                    <Cell key={index} fill={entry.fill} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
           </CardContent>
         </Card>
       </div>

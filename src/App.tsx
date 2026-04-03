@@ -19,20 +19,17 @@ import UserSegmentation from "./pages/UserSegmentation";
 import AttributionModeling from "./pages/AttributionModeling";
 import ConversionFunnel from "./pages/ConversionFunnel";
 import ContentPerformance from "./pages/ContentPerformance";
-import CustomerDashboard from "./pages/CustomerDashboard";
-import ProductDetail from "./pages/ProductDetail";
 import Profile from "./pages/Profile";
-import CustomerLayout from "./components/CustomerLayout";
 import BusinessLayout from "./components/BusinessLayout";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
 function AuthRedirect() {
-  const { user, role, loading } = useAuth();
+  const { user, loading } = useAuth();
   if (loading) return <div className="min-h-screen flex items-center justify-center"><div className="w-8 h-8 border-4 border-accent border-t-transparent rounded-full animate-spin" /></div>;
   if (!user) return <Auth />;
-  return <Navigate to={role === "business_owner" ? "/dashboard" : "/customer"} replace />;
+  return <Navigate to="/dashboard" replace />;
 }
 
 const App = () => (
@@ -46,15 +43,8 @@ const App = () => (
             <Route path="/" element={<Landing />} />
             <Route path="/auth" element={<AuthRedirect />} />
 
-            {/* Customer routes */}
-            <Route path="/customer" element={<ProtectedRoute requiredRole="customer"><CustomerLayout /></ProtectedRoute>}>
-              <Route index element={<CustomerDashboard />} />
-              <Route path="product/:id" element={<ProductDetail />} />
-              <Route path="profile" element={<Profile />} />
-            </Route>
-
             {/* Business owner routes */}
-            <Route path="/dashboard" element={<ProtectedRoute requiredRole="business_owner"><BusinessLayout /></ProtectedRoute>}>
+            <Route path="/dashboard" element={<ProtectedRoute><BusinessLayout /></ProtectedRoute>}>
               <Route index element={<Dashboard />} />
               <Route path="sentiment" element={<SentimentAnalysis />} />
               <Route path="churn" element={<ChurnPredictions />} />
