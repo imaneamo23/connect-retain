@@ -1,6 +1,7 @@
 import { ArrowRight, BarChart3, Brain, Shield, TrendingUp, Layers, Database, Cpu, LineChart, ChevronRight, Eye, MousePointer, ShoppingCart, Heart, Target, Zap, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const features = [
   { icon: Brain, title: "AI Sentiment Analysis", desc: "Analyze customer emotions from social media comments and reviews using advanced NLP models." },
