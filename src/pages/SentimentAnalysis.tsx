@@ -1,6 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SentimentChart } from "@/components/SentimentChart";
 import { TrendingUp, TrendingDown, Minus } from "lucide-react";
+import { usePages } from "@/contexts/PagesContext";
+import { AnalyticsEmptyState } from "@/components/AnalyticsEmptyState";
 
 const sentimentBreakdown = [
   { label: "Positive", value: 68, color: "bg-success" },
@@ -17,6 +19,12 @@ const topTopics = [
 ];
 
 export default function SentimentAnalysis() {
+  const { pages } = usePages();
+
+  if (pages.length === 0) {
+    return <AnalyticsEmptyState title="Sentiment Analysis" description="Deep dive into customer sentiment trends and patterns" />;
+  }
+
   return (
     <div className="space-y-6">
       <div>

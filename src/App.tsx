@@ -47,7 +47,7 @@ const App = () => (
               <Route path="churn" element={<ChurnPredictions />} />
               <Route path="feedback" element={<CustomerFeedback />} />
               <Route path="segmentation" element={<UserSegmentation />} />
-              <Route path="attribution" element={<AttributionModeling />} />
+              
               <Route path="funnel" element={<ConversionFunnel />} />
               <Route path="content" element={<ContentPerformance />} />
               <Route path="profile" element={<Profile />} />
