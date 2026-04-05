@@ -21,7 +21,7 @@ const analyticsItems = [
   { title: "Churn Predictions", url: "/dashboard/churn", icon: AlertTriangle },
   { title: "User Segmentation", url: "/dashboard/segmentation", icon: Users },
   { title: "Conversion Funnel", url: "/dashboard/funnel", icon: ShoppingCart },
-  { title: "Attribution", url: "/dashboard/attribution", icon: Globe },
+  
   { title: "Content Performance", url: "/dashboard/content", icon: FileBarChart },
   { title: "Customer Feedback", url: "/dashboard/feedback", icon: MessageSquare },
 ];
