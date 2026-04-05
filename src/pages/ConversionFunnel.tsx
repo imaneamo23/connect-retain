@@ -1,8 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ShoppingCart, MousePointer, Eye, DollarSign } from "lucide-react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, LineChart, Line } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from "recharts";
+import { usePages } from "@/contexts/PagesContext";
+import { AnalyticsEmptyState } from "@/components/AnalyticsEmptyState";
 
-// TODO: Replace with API call — e.g. fetch("/api/funnel/overview")
 const funnelSteps = [
   { icon: Eye, label: "Impressions", value: "342.1K", note: "Total content views", conversion: "100%" },
   { icon: MousePointer, label: "Clicks", value: "10,947", note: "CTR: 3.2%", conversion: "3.2%" },
@@ -10,7 +11,6 @@ const funnelSteps = [
   { icon: DollarSign, label: "Revenue", value: "$90,500", note: "Avg order: $39.40", conversion: "—" },
 ];
 
-// TODO: Replace with API call — e.g. fetch("/api/funnel/visualization")
 const funnelData = [
   { stage: "Impressions", value: 342100, fill: "hsl(var(--accent))" },
   { stage: "Clicks", value: 10947, fill: "hsl(45, 93%, 47%)" },
@@ -18,7 +18,6 @@ const funnelData = [
   { stage: "Purchase", value: 2299, fill: "hsl(0, 84%, 60%)" },
 ];
 
-// TODO: Replace with API call — e.g. fetch("/api/funnel/top-content")
 const topContent = [
   { title: "Summer Sale Video", type: "Video", ctr: "5.2%", conversions: 342, revenue: "$13,476" },
   { title: "Product Tutorial Reel", type: "Video", ctr: "4.8%", conversions: 287, revenue: "$11,308" },
@@ -28,6 +27,12 @@ const topContent = [
 ];
 
 export default function ConversionFunnel() {
+  const { pages } = usePages();
+
+  if (pages.length === 0) {
+    return <AnalyticsEmptyState title="Conversion Funnel" description="Track CTR, conversion rates, and CPA across content and platforms" />;
+  }
+
   return (
     <div className="space-y-6">
       <div>

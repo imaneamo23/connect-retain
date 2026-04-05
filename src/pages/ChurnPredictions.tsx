@@ -2,6 +2,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChurnRiskList } from "@/components/ChurnRiskList";
 import { Badge } from "@/components/ui/badge";
 import { AlertTriangle, TrendingDown, Users, ShieldCheck } from "lucide-react";
+import { usePages } from "@/contexts/PagesContext";
+import { AnalyticsEmptyState } from "@/components/AnalyticsEmptyState";
 
 const stats = [
   { icon: AlertTriangle, label: "High Risk", value: "23", color: "text-destructive", bg: "bg-destructive/10" },
@@ -11,6 +13,12 @@ const stats = [
 ];
 
 export default function ChurnPredictions() {
+  const { pages } = usePages();
+
+  if (pages.length === 0) {
+    return <AnalyticsEmptyState title="Churn Predictions" description="AI-powered customer churn risk analysis and prevention" />;
+  }
+
   return (
     <div className="space-y-6">
       <div>

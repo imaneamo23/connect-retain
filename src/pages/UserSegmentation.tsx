@@ -1,8 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, Crown, Eye, ShoppingCart } from "lucide-react";
 import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, Cell } from "recharts";
+import { usePages } from "@/contexts/PagesContext";
+import { AnalyticsEmptyState } from "@/components/AnalyticsEmptyState";
 
-// TODO: Replace with API call — e.g. fetch("/api/segmentation/clusters")
 const segments = [
   { icon: Crown, title: "High-Value Customers", desc: "Frequent buyers with high LTV. Engage regularly and drive revenue.", color: "text-accent", bg: "bg-accent/10", count: 1243, pct: "31%" },
   { icon: Eye, title: "Passive Users", desc: "Low engagement, rarely interact. At risk of becoming inactive.", color: "text-warning", bg: "bg-warning/10", count: 892, pct: "22%" },
@@ -10,7 +11,6 @@ const segments = [
   { icon: Users, title: "Churned Users", desc: "Previously active users who stopped engaging. Reactivation targets.", color: "text-destructive", bg: "bg-destructive/10", count: 834, pct: "21%" },
 ];
 
-// TODO: Replace with API call — e.g. fetch("/api/segmentation/scatter")
 const clusterData = [
   { x: 20, y: 80, cluster: "High-Value" }, { x: 25, y: 75, cluster: "High-Value" }, { x: 30, y: 90, cluster: "High-Value" }, { x: 15, y: 85, cluster: "High-Value" },
   { x: 60, y: 20, cluster: "Passive" }, { x: 65, y: 15, cluster: "Passive" }, { x: 70, y: 25, cluster: "Passive" }, { x: 55, y: 10, cluster: "Passive" },
@@ -18,7 +18,6 @@ const clusterData = [
   { x: 80, y: 10, cluster: "Churned" }, { x: 85, y: 5, cluster: "Churned" }, { x: 90, y: 15, cluster: "Churned" }, { x: 75, y: 8, cluster: "Churned" },
 ];
 
-// TODO: Replace with API call — e.g. fetch("/api/segmentation/behaviors")
 const behaviorData = [
   { action: "Comment", conversionLift: 3.2 },
   { action: "Share", conversionLift: 2.8 },
@@ -30,6 +29,12 @@ const behaviorData = [
 const CLUSTER_COLORS = ["hsl(var(--accent))", "hsl(45, 93%, 47%)", "hsl(152, 56%, 45%)", "hsl(0, 84%, 60%)"];
 
 export default function UserSegmentation() {
+  const { pages } = usePages();
+
+  if (pages.length === 0) {
+    return <AnalyticsEmptyState title="User Segmentation" description="AI-powered customer clustering using K-Means and behavioral features" />;
+  }
+
   return (
     <div className="space-y-6">
       <div>

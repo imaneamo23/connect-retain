@@ -1,15 +1,15 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Video, Image, FileText, TrendingUp } from "lucide-react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, AreaChart, Area } from "recharts";
+import { Video, Image, FileText } from "lucide-react";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area, Line } from "recharts";
+import { usePages } from "@/contexts/PagesContext";
+import { AnalyticsEmptyState } from "@/components/AnalyticsEmptyState";
 
-// TODO: Replace with API call — e.g. fetch("/api/content/types")
 const contentTypes = [
   { icon: Video, label: "Videos", note: "Higher CTR typically", value: "5.2%", engagement: "8.4%" },
   { icon: Image, label: "Images", note: "Strong engagement", value: "3.8%", engagement: "6.1%" },
   { icon: FileText, label: "Text Posts", note: "Comment-driven", value: "2.1%", engagement: "4.3%" },
 ];
 
-// TODO: Replace with API call — e.g. fetch("/api/content/comparison")
 const comparisonData = [
   { metric: "CTR", video: 5.2, image: 3.8, text: 2.1 },
   { metric: "Eng. Rate", video: 8.4, image: 6.1, text: 4.3 },
@@ -17,7 +17,6 @@ const comparisonData = [
   { metric: "Save Rate", video: 4.5, image: 5.2, text: 2.0 },
 ];
 
-// TODO: Replace with API call — e.g. fetch("/api/content/trending-topics")
 const trendingTopics = [
   { topic: "#ProductReview", posts: 342, engagement: "7.2%", sentiment: 88 },
   { topic: "#HowTo", posts: 287, engagement: "6.8%", sentiment: 92 },
@@ -26,7 +25,6 @@ const trendingTopics = [
   { topic: "#SaleAlert", posts: 412, engagement: "5.4%", sentiment: 72 },
 ];
 
-// TODO: Replace with API call — e.g. fetch("/api/content/timeline")
 const timelineData = [
   { week: "W1", videos: 120, images: 85, text: 45 },
   { week: "W2", videos: 135, images: 92, text: 40 },
@@ -39,6 +37,12 @@ const timelineData = [
 ];
 
 export default function ContentPerformance() {
+  const { pages } = usePages();
+
+  if (pages.length === 0) {
+    return <AnalyticsEmptyState title="Content Performance" description="Analyze which content types and topics drive the best business outcomes" />;
+  }
+
   return (
     <div className="space-y-6">
       <div>

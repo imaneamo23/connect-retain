@@ -13,7 +13,7 @@ import SentimentAnalysis from "./pages/SentimentAnalysis";
 import ChurnPredictions from "./pages/ChurnPredictions";
 import CustomerFeedback from "./pages/CustomerFeedback";
 import UserSegmentation from "./pages/UserSegmentation";
-import AttributionModeling from "./pages/AttributionModeling";
+
 import ConversionFunnel from "./pages/ConversionFunnel";
 import ContentPerformance from "./pages/ContentPerformance";
 import Profile from "./pages/Profile";
@@ -47,7 +47,7 @@ const App = () => (
               <Route path="churn" element={<ChurnPredictions />} />
               <Route path="feedback" element={<CustomerFeedback />} />
               <Route path="segmentation" element={<UserSegmentation />} />
-              <Route path="attribution" element={<AttributionModeling />} />
+              
               <Route path="funnel" element={<ConversionFunnel />} />
               <Route path="content" element={<ContentPerformance />} />
               <Route path="profile" element={<Profile />} />

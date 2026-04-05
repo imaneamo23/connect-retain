@@ -1,4 +1,4 @@
-import { BarChart3, TrendingUp, AlertTriangle, MessageSquare, Users, Globe, ShoppingCart, FileBarChart } from "lucide-react";
+import { BarChart3, TrendingUp, AlertTriangle, MessageSquare, Users, ShoppingCart, FileBarChart } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import {
   Sidebar,
@@ -21,7 +21,7 @@ const analyticsItems = [
   { title: "Churn Predictions", url: "/dashboard/churn", icon: AlertTriangle },
   { title: "User Segmentation", url: "/dashboard/segmentation", icon: Users },
   { title: "Conversion Funnel", url: "/dashboard/funnel", icon: ShoppingCart },
-  { title: "Attribution", url: "/dashboard/attribution", icon: Globe },
+  
   { title: "Content Performance", url: "/dashboard/content", icon: FileBarChart },
   { title: "Customer Feedback", url: "/dashboard/feedback", icon: MessageSquare },
 ];
