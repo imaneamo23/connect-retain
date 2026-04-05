@@ -43,6 +43,7 @@ export default function BusinessLayout() {
           </main>
         </div>
       </div>
-    </SidebarProvider>
+      </SidebarProvider>
+    </PagesProvider>
   );
 }
