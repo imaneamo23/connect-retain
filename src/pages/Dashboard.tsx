@@ -2,7 +2,10 @@ import { Eye, MousePointer, ShoppingCart, Heart, TrendingUp, AlertTriangle, Data
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
+import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import { usePages } from "@/contexts/PagesContext";
+import { EmptyDashboard } from "@/components/EmptyDashboard";
+import { Skeleton } from "@/components/ui/skeleton";
 
 // TODO: Replace with API call — e.g. fetch("/api/metrics/overview")
 const metricCategories = [
@@ -75,13 +78,27 @@ const quickLinks = [
 
 export default function Dashboard() {
   const navigate = useNavigate();
+  const { pages, currentPage, loading } = usePages();
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <Skeleton className="h-8 w-64" />
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+          {[1, 2, 3, 4].map((i) => <Skeleton key={i} className="h-40" />)}
+        </div>
+      </div>
+    );
+  }
+
+  if (pages.length === 0) return <EmptyDashboard />;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-in fade-in-0 duration-300">
       <div>
-        <h1 className="text-2xl font-bold">Dashboard Overview</h1>
+        <h1 className="text-2xl font-bold">{currentPage?.page_name ?? "Dashboard Overview"}</h1>
         <p className="text-muted-foreground text-sm mt-1">
-          Monitor social media intelligence and customer behavior metrics across all categories
+          Monitor social media intelligence and customer behavior metrics for this page
         </p>
       </div>
 

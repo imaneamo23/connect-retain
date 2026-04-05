@@ -41,6 +41,30 @@ export type Database = {
         }
         Relationships: []
       }
+      social_pages: {
+        Row: {
+          created_at: string
+          id: string
+          page_name: string
+          page_url: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          page_name: string
+          page_url: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          page_name?: string
+          page_url?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string

@@ -2,6 +2,8 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { BusinessSidebar } from "@/components/BusinessSidebar";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { PagesProvider } from "@/contexts/PagesContext";
+import { PageSelector } from "@/components/PageSelector";
 import { Button } from "@/components/ui/button";
 import { LogOut, User } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -16,15 +18,16 @@ export default function BusinessLayout() {
   };
 
   return (
-    <SidebarProvider>
-      <div className="min-h-screen flex w-full">
-        <BusinessSidebar />
-        <div className="flex-1 flex flex-col">
-          <header className="sticky top-0 z-40 h-14 flex items-center justify-between border-b px-4 bg-card/80 backdrop-blur-md">
-            <div className="flex items-center">
-              <SidebarTrigger className="mr-4" />
-              <h2 className="text-sm font-medium text-muted-foreground">Business Intelligence</h2>
-            </div>
+    <PagesProvider>
+      <SidebarProvider>
+        <div className="min-h-screen flex w-full">
+          <BusinessSidebar />
+          <div className="flex-1 flex flex-col">
+            <header className="sticky top-0 z-40 h-14 flex items-center justify-between border-b px-4 bg-card/80 backdrop-blur-md">
+              <div className="flex items-center gap-3">
+                <SidebarTrigger className="mr-1" />
+                <PageSelector />
+              </div>
             <div className="flex items-center gap-2">
               <ThemeToggle />
               <Button variant="ghost" size="sm" onClick={() => navigate("/dashboard/profile")} className="gap-1.5">
@@ -40,6 +43,7 @@ export default function BusinessLayout() {
           </main>
         </div>
       </div>
-    </SidebarProvider>
+      </SidebarProvider>
+    </PagesProvider>
   );
 }
