@@ -96,9 +96,9 @@ export default function Dashboard() {
   return (
     <div className="space-y-6 animate-in fade-in-0 duration-300">
       <div>
-        <h1 className="text-2xl font-bold">Dashboard Overview</h1>
+        <h1 className="text-2xl font-bold">{currentPage?.page_name ?? "Dashboard Overview"}</h1>
         <p className="text-muted-foreground text-sm mt-1">
-          Monitor social media intelligence and customer behavior metrics across all categories
+          Monitor social media intelligence and customer behavior metrics for this page
         </p>
       </div>
 
