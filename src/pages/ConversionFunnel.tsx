@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ShoppingCart, MousePointer, Eye, Users, FileText } from "lucide-react";
+import { ShoppingCart, MousePointer, Eye } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from "recharts";
 import { usePages } from "@/contexts/PagesContext";
 import { AnalyticsEmptyState } from "@/components/AnalyticsEmptyState";
