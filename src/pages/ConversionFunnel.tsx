@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ShoppingCart, MousePointer, Eye, Users, FileText } from "lucide-react";
+import { ShoppingCart, MousePointer, Eye } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from "recharts";
 import { usePages } from "@/contexts/PagesContext";
 import { AnalyticsEmptyState } from "@/components/AnalyticsEmptyState";
@@ -8,15 +8,12 @@ const funnelSteps = [
   { icon: Eye, label: "Impressions", value: "342.1K", note: "Total content views", conversion: "100%" },
   { icon: MousePointer, label: "Clicks", value: "10,947", note: "CTR: 3.2%", conversion: "3.2%" },
   { icon: ShoppingCart, label: "Conversions", value: "2,299", note: "Conv Rate: 2.1%", conversion: "21%" },
-  { icon: Users, label: "Subscribers", value: "8,412", note: "Total followers", conversion: "—" },
-  { icon: FileText, label: "Posts", value: "156", note: "Published content", conversion: "—" },
 ];
 
 const funnelData = [
   { stage: "Impressions", value: 342100, fill: "hsl(var(--accent))" },
   { stage: "Clicks", value: 10947, fill: "hsl(45, 93%, 47%)" },
-  { stage: "Add to Cart", value: 5420, fill: "hsl(152, 56%, 45%)" },
-  { stage: "Purchase", value: 2299, fill: "hsl(0, 84%, 60%)" },
+  { stage: "Conversions", value: 2299, fill: "hsl(152, 56%, 45%)" },
 ];
 
 const topContent = [
@@ -41,7 +38,7 @@ export default function ConversionFunnel() {
         <p className="text-muted-foreground text-sm mt-1">Track CTR, conversion rates, subscribers and posts across content and platforms</p>
       </div>
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
+      <div className="grid sm:grid-cols-3 gap-4">
         {funnelSteps.map((step) => (
           <Card key={step.label} className="glass-card">
             <CardContent className="p-5">

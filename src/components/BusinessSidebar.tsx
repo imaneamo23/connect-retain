@@ -17,9 +17,9 @@ const mainItems = [
 ];
 
 const analyticsItems = [
-  { title: "Page Overview", url: "/dashboard/page-overview", icon: LayoutDashboard },
+  { title: "Page Information", url: "/dashboard/page-overview", icon: LayoutDashboard },
   { title: "Sentiment Analysis", url: "/dashboard/sentiment", icon: TrendingUp },
-  { title: "Engagement Growth", url: "/dashboard/churn", icon: Activity },
+  { title: "Churn Prediction", url: "/dashboard/churn", icon: Activity },
   { title: "User Segmentation", url: "/dashboard/segmentation", icon: Users },
   { title: "Conversion Funnel", url: "/dashboard/funnel", icon: ShoppingCart },
   { title: "Content Performance", url: "/dashboard/content", icon: FileBarChart },
