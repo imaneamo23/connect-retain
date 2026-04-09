@@ -1,0 +1,223 @@
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Users, FileText, Clock, Activity, TrendingUp, TrendingDown, Eye, Heart, Share2, MessageCircle, ChevronRight, ArrowLeft } from "lucide-react";
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import { usePages } from "@/contexts/PagesContext";
+import { AnalyticsEmptyState } from "@/components/AnalyticsEmptyState";
+import { Button } from "@/components/ui/button";
+
+const pageStats = [
+  { icon: Users, label: "Subscribers", value: "8,412", change: "+234", trend: "up" },
+  { icon: FileText, label: "Total Posts", value: "156", change: "+12", trend: "up" },
+  { icon: Clock, label: "Avg. Engagement Time", value: "2m 34s", change: "+18s", trend: "up" },
+  { icon: Activity, label: "Total Interactions", value: "45.2K", change: "-1.2K", trend: "down" },
+];
+
+const subscriberGrowth = [
+  { month: "Jan", subscribers: 6200 },
+  { month: "Feb", subscribers: 6450 },
+  { month: "Mar", subscribers: 6800 },
+  { month: "Apr", subscribers: 7100 },
+  { month: "May", subscribers: 7500 },
+  { month: "Jun", subscribers: 7850 },
+  { month: "Jul", subscribers: 8100 },
+  { month: "Aug", subscribers: 8412 },
+];
+
+interface PostItem {
+  id: string;
+  title: string;
+  date: string;
+  type: string;
+  views: string;
+  likes: number;
+  comments: number;
+  shares: number;
+  saves: number;
+}
+
+const posts: PostItem[] = [
+  { id: "1", title: "Summer Collection Launch", date: "Aug 12, 2025", type: "Video", views: "24.5K", likes: 1842, comments: 234, shares: 156, saves: 89 },
+  { id: "2", title: "Behind the Scenes Video", date: "Aug 10, 2025", type: "Video", views: "18.2K", likes: 1456, comments: 178, shares: 102, saves: 67 },
+  { id: "3", title: "Customer Testimonial", date: "Aug 8, 2025", type: "Image", views: "12.1K", likes: 987, comments: 145, shares: 78, saves: 45 },
+  { id: "4", title: "Product Tutorial Reel", date: "Aug 5, 2025", type: "Video", views: "31.4K", likes: 2341, comments: 312, shares: 198, saves: 134 },
+  { id: "5", title: "Tips & Tricks Thread", date: "Aug 3, 2025", type: "Text", views: "8.7K", likes: 654, comments: 98, shares: 45, saves: 32 },
+  { id: "6", title: "New Arrivals Story", date: "Aug 1, 2025", type: "Story", views: "15.3K", likes: 1123, comments: 89, shares: 67, saves: 51 },
+];
+
+export default function PageOverview() {
+  const { pages } = usePages();
+  const [selectedPost, setSelectedPost] = useState<PostItem | null>(null);
+
+  if (pages.length === 0) {
+    return <AnalyticsEmptyState title="Page Overview" description="View subscribers, posts, engagement and interaction metrics for your page" />;
+  }
+
+  if (selectedPost) {
+    return (
+      <div className="space-y-6 animate-in fade-in-0 slide-in-from-right-5 duration-300">
+        <div className="flex items-center gap-3">
+          <Button variant="ghost" size="icon" onClick={() => setSelectedPost(null)}>
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
+          <div>
+            <h1 className="text-2xl font-bold">{selectedPost.title}</h1>
+            <p className="text-muted-foreground text-sm mt-1">{selectedPost.date} · {selectedPost.type}</p>
+          </div>
+        </div>
+
+        <div className="grid sm:grid-cols-2 gap-4">
+          <Card className="glass-card">
+            <CardContent className="p-5">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center">
+                  <Eye className="h-5 w-5 text-accent" />
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Total Views</p>
+                  <p className="text-3xl font-bold">{selectedPost.views}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="glass-card">
+            <CardContent className="p-5">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center">
+                  <Activity className="h-5 w-5 text-accent" />
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Total Interactions</p>
+                  <p className="text-3xl font-bold">{(selectedPost.likes + selectedPost.comments + selectedPost.shares + selectedPost.saves).toLocaleString()}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <Card className="glass-card">
+          <CardHeader>
+            <CardTitle className="text-base">Interaction Breakdown</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <div className="flex items-center gap-3 p-4 rounded-lg bg-secondary/50">
+                <Heart className="h-5 w-5 text-destructive" />
+                <div>
+                  <p className="text-xl font-bold">{selectedPost.likes.toLocaleString()}</p>
+                  <p className="text-xs text-muted-foreground">Likes</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 p-4 rounded-lg bg-secondary/50">
+                <MessageCircle className="h-5 w-5 text-accent" />
+                <div>
+                  <p className="text-xl font-bold">{selectedPost.comments.toLocaleString()}</p>
+                  <p className="text-xs text-muted-foreground">Comments</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 p-4 rounded-lg bg-secondary/50">
+                <Share2 className="h-5 w-5 text-success" />
+                <div>
+                  <p className="text-xl font-bold">{selectedPost.shares.toLocaleString()}</p>
+                  <p className="text-xs text-muted-foreground">Shares</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 p-4 rounded-lg bg-secondary/50">
+                <Eye className="h-5 w-5 text-warning" />
+                <div>
+                  <p className="text-xl font-bold">{selectedPost.saves.toLocaleString()}</p>
+                  <p className="text-xs text-muted-foreground">Saves</p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-bold">Page Overview</h1>
+        <p className="text-muted-foreground text-sm mt-1">View subscribers, posts, engagement and interaction metrics</p>
+      </div>
+
+      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {pageStats.map((s) => (
+          <Card key={s.label} className="glass-card">
+            <CardContent className="p-5">
+              <div className="flex items-center justify-between mb-3">
+                <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center">
+                  <s.icon className="h-5 w-5 text-accent" />
+                </div>
+                {s.trend === "up" ? <TrendingUp className="h-4 w-4 text-success" /> : <TrendingDown className="h-4 w-4 text-destructive" />}
+              </div>
+              <p className="text-2xl font-bold">{s.value}</p>
+              <div className="flex items-center justify-between mt-1">
+                <p className="text-sm text-muted-foreground">{s.label}</p>
+                <span className={`text-xs font-medium ${s.trend === "up" ? "text-success" : "text-destructive"}`}>{s.change}</span>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      <Card className="glass-card">
+        <CardHeader>
+          <CardTitle className="text-base">Subscriber Growth</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ResponsiveContainer width="100%" height={280}>
+            <AreaChart data={subscriberGrowth}>
+              <defs>
+                <linearGradient id="subGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="hsl(var(--accent))" stopOpacity={0.3} />
+                  <stop offset="95%" stopColor="hsl(var(--accent))" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+              <XAxis dataKey="month" stroke="hsl(var(--muted-foreground))" fontSize={12} />
+              <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} />
+              <Tooltip contentStyle={{ backgroundColor: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "8px", fontSize: "12px" }} formatter={(value: number) => value.toLocaleString()} />
+              <Area type="monotone" dataKey="subscribers" stroke="hsl(var(--accent))" fill="url(#subGrad)" strokeWidth={2} name="Subscribers" />
+            </AreaChart>
+          </ResponsiveContainer>
+        </CardContent>
+      </Card>
+
+      <Card className="glass-card">
+        <CardHeader>
+          <CardTitle className="text-base">Posts</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-2">
+            {posts.map((post) => (
+              <button
+                key={post.id}
+                onClick={() => setSelectedPost(post)}
+                className="w-full flex items-center justify-between p-4 rounded-lg bg-secondary/50 hover:bg-secondary/80 transition-colors text-left"
+              >
+                <div className="flex-1 min-w-0">
+                  <p className="font-medium text-sm truncate">{post.title}</p>
+                  <p className="text-xs text-muted-foreground">{post.date} · {post.type}</p>
+                </div>
+                <div className="flex items-center gap-4 ml-4">
+                  <div className="text-right hidden sm:block">
+                    <p className="text-sm font-medium">{post.views}</p>
+                    <p className="text-xs text-muted-foreground">views</p>
+                  </div>
+                  <div className="text-right hidden sm:block">
+                    <p className="text-sm font-medium">{(post.likes + post.comments + post.shares).toLocaleString()}</p>
+                    <p className="text-xs text-muted-foreground">interactions</p>
+                  </div>
+                  <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                </div>
+              </button>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}

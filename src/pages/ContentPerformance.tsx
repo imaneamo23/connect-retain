@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Video, Image, FileText } from "lucide-react";
+import { Video, Image, FileText, Clock } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area, Line } from "recharts";
 import { usePages } from "@/contexts/PagesContext";
 import { AnalyticsEmptyState } from "@/components/AnalyticsEmptyState";
@@ -8,13 +8,14 @@ const contentTypes = [
   { icon: Video, label: "Videos", note: "Higher CTR typically", value: "5.2%", engagement: "8.4%" },
   { icon: Image, label: "Images", note: "Strong engagement", value: "3.8%", engagement: "6.1%" },
   { icon: FileText, label: "Text Posts", note: "Comment-driven", value: "2.1%", engagement: "4.3%" },
+  { icon: Clock, label: "Stories", note: "Time-sensitive reach", value: "4.5%", engagement: "7.2%" },
 ];
 
 const comparisonData = [
-  { metric: "CTR", video: 5.2, image: 3.8, text: 2.1 },
-  { metric: "Eng. Rate", video: 8.4, image: 6.1, text: 4.3 },
-  { metric: "Conv. Rate", video: 3.1, image: 2.4, text: 1.8 },
-  { metric: "Save Rate", video: 4.5, image: 5.2, text: 2.0 },
+  { metric: "CTR", video: 5.2, image: 3.8, text: 2.1, stories: 4.5 },
+  { metric: "Eng. Rate", video: 8.4, image: 6.1, text: 4.3, stories: 7.2 },
+  { metric: "Conv. Rate", video: 3.1, image: 2.4, text: 1.8, stories: 2.9 },
+  { metric: "Save Rate", video: 4.5, image: 5.2, text: 2.0, stories: 3.1 },
 ];
 
 const trendingTopics = [
@@ -26,14 +27,14 @@ const trendingTopics = [
 ];
 
 const timelineData = [
-  { week: "W1", videos: 120, images: 85, text: 45 },
-  { week: "W2", videos: 135, images: 92, text: 40 },
-  { week: "W3", videos: 128, images: 98, text: 52 },
-  { week: "W4", videos: 150, images: 88, text: 38 },
-  { week: "W5", videos: 165, images: 105, text: 48 },
-  { week: "W6", videos: 172, images: 110, text: 55 },
-  { week: "W7", videos: 180, images: 102, text: 50 },
-  { week: "W8", videos: 195, images: 115, text: 42 },
+  { week: "W1", videos: 120, images: 85, text: 45, stories: 95 },
+  { week: "W2", videos: 135, images: 92, text: 40, stories: 110 },
+  { week: "W3", videos: 128, images: 98, text: 52, stories: 102 },
+  { week: "W4", videos: 150, images: 88, text: 38, stories: 125 },
+  { week: "W5", videos: 165, images: 105, text: 48, stories: 130 },
+  { week: "W6", videos: 172, images: 110, text: 55, stories: 140 },
+  { week: "W7", videos: 180, images: 102, text: 50, stories: 135 },
+  { week: "W8", videos: 195, images: 115, text: 42, stories: 150 },
 ];
 
 export default function ContentPerformance() {
@@ -50,7 +51,7 @@ export default function ContentPerformance() {
         <p className="text-muted-foreground text-sm mt-1">Analyze which content types and topics drive the best business outcomes</p>
       </div>
 
-      <div className="grid sm:grid-cols-3 gap-4">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {contentTypes.map((ct) => (
           <Card key={ct.label} className="glass-card">
             <CardContent className="p-5">
@@ -89,6 +90,7 @@ export default function ContentPerformance() {
                 <Bar dataKey="video" fill="hsl(var(--accent))" name="Video" radius={[4, 4, 0, 0]} />
                 <Bar dataKey="image" fill="hsl(152, 56%, 45%)" name="Image" radius={[4, 4, 0, 0]} />
                 <Bar dataKey="text" fill="hsl(45, 93%, 47%)" name="Text" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="stories" fill="hsl(280, 67%, 55%)" name="Stories" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
@@ -137,6 +139,10 @@ export default function ContentPerformance() {
                   <stop offset="5%" stopColor="hsl(152, 56%, 45%)" stopOpacity={0.3} />
                   <stop offset="95%" stopColor="hsl(152, 56%, 45%)" stopOpacity={0} />
                 </linearGradient>
+                <linearGradient id="storiesGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="hsl(280, 67%, 55%)" stopOpacity={0.3} />
+                  <stop offset="95%" stopColor="hsl(280, 67%, 55%)" stopOpacity={0} />
+                </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
               <XAxis dataKey="week" stroke="hsl(var(--muted-foreground))" fontSize={12} />
@@ -144,6 +150,7 @@ export default function ContentPerformance() {
               <Tooltip contentStyle={{ backgroundColor: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "8px", fontSize: "12px" }} />
               <Area type="monotone" dataKey="videos" stroke="hsl(var(--accent))" fill="url(#videoGrad)" strokeWidth={2} name="Videos" />
               <Area type="monotone" dataKey="images" stroke="hsl(152, 56%, 45%)" fill="url(#imageGrad)" strokeWidth={2} name="Images" />
+              <Area type="monotone" dataKey="stories" stroke="hsl(280, 67%, 55%)" fill="url(#storiesGrad)" strokeWidth={2} name="Stories" />
               <Line type="monotone" dataKey="text" stroke="hsl(45, 93%, 47%)" strokeWidth={2} dot={false} name="Text" />
             </AreaChart>
           </ResponsiveContainer>
