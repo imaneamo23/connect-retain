@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 const pageStats = [
   { icon: Users, label: "Subscribers", value: "8,412", change: "+234", trend: "up" },
   { icon: FileText, label: "Total Posts", value: "156", change: "+12", trend: "up" },
-  { icon: Clock, label: "Avg. Engagement Time", value: "2m 34s", change: "+18s", trend: "up" },
+  { icon: Clock, label: "Avg. Engagement", value: "2m 34s", change: "+18s", trend: "up" },
   { icon: Activity, label: "Total Interactions", value: "45.2K", change: "-1.2K", trend: "down" },
 ];
 
@@ -50,7 +50,7 @@ export default function PageOverview() {
   const [selectedPost, setSelectedPost] = useState<PostItem | null>(null);
 
   if (pages.length === 0) {
-    return <AnalyticsEmptyState title="Page Overview" description="View subscribers, posts, engagement and interaction metrics for your page" />;
+    return <AnalyticsEmptyState title="Page Information" description="View subscribers, posts, engagement and interaction metrics for your page" />;
   }
 
   if (selectedPost) {
@@ -139,7 +139,7 @@ export default function PageOverview() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold">Page Overview</h1>
+        <h1 className="text-2xl font-bold">Page Information</h1>
         <p className="text-muted-foreground text-sm mt-1">View subscribers, posts, engagement and interaction metrics</p>
       </div>
 
