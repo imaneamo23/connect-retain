@@ -16,6 +16,7 @@ import UserSegmentation from "./pages/UserSegmentation";
 
 import ConversionFunnel from "./pages/ConversionFunnel";
 import ContentPerformance from "./pages/ContentPerformance";
+import PageOverview from "./pages/PageOverview";
 import Profile from "./pages/Profile";
 import BusinessLayout from "./components/BusinessLayout";
 import NotFound from "./pages/NotFound";
@@ -50,6 +51,7 @@ const App = () => (
               
               <Route path="funnel" element={<ConversionFunnel />} />
               <Route path="content" element={<ContentPerformance />} />
+              <Route path="page-overview" element={<PageOverview />} />
               <Route path="profile" element={<Profile />} />
             </Route>
 
