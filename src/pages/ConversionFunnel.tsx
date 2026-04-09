@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ShoppingCart, MousePointer, Eye, DollarSign } from "lucide-react";
+import { ShoppingCart, MousePointer, Eye, Users, FileText } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from "recharts";
 import { usePages } from "@/contexts/PagesContext";
 import { AnalyticsEmptyState } from "@/components/AnalyticsEmptyState";
@@ -8,7 +8,8 @@ const funnelSteps = [
   { icon: Eye, label: "Impressions", value: "342.1K", note: "Total content views", conversion: "100%" },
   { icon: MousePointer, label: "Clicks", value: "10,947", note: "CTR: 3.2%", conversion: "3.2%" },
   { icon: ShoppingCart, label: "Conversions", value: "2,299", note: "Conv Rate: 2.1%", conversion: "21%" },
-  { icon: DollarSign, label: "Revenue", value: "$90,500", note: "Avg order: $39.40", conversion: "—" },
+  { icon: Users, label: "Subscribers", value: "8,412", note: "Total followers", conversion: "—" },
+  { icon: FileText, label: "Posts", value: "156", note: "Published content", conversion: "—" },
 ];
 
 const funnelData = [
@@ -19,28 +20,28 @@ const funnelData = [
 ];
 
 const topContent = [
-  { title: "Summer Sale Video", type: "Video", ctr: "5.2%", conversions: 342, revenue: "$13,476" },
-  { title: "Product Tutorial Reel", type: "Video", ctr: "4.8%", conversions: 287, revenue: "$11,308" },
-  { title: "Customer Story Post", type: "Image", ctr: "3.9%", conversions: 198, revenue: "$7,801" },
-  { title: "Behind the Scenes", type: "Image", ctr: "3.4%", conversions: 156, revenue: "$6,146" },
-  { title: "Tips & Tricks Thread", type: "Text", ctr: "2.8%", conversions: 124, revenue: "$4,886" },
+  { title: "Summer Sale Video", type: "Video", ctr: "5.2%", conversions: 342, impressions: "48.2K" },
+  { title: "Product Tutorial Reel", type: "Video", ctr: "4.8%", conversions: 287, impressions: "39.7K" },
+  { title: "Customer Story Post", type: "Image", ctr: "3.9%", conversions: 198, impressions: "28.1K" },
+  { title: "Behind the Scenes", type: "Image", ctr: "3.4%", conversions: 156, impressions: "22.5K" },
+  { title: "Tips & Tricks Thread", type: "Text", ctr: "2.8%", conversions: 124, impressions: "18.3K" },
 ];
 
 export default function ConversionFunnel() {
   const { pages } = usePages();
 
   if (pages.length === 0) {
-    return <AnalyticsEmptyState title="Conversion Funnel" description="Track CTR, conversion rates, and CPA across content and platforms" />;
+    return <AnalyticsEmptyState title="Conversion Funnel" description="Track CTR, conversion rates, subscribers and posts across content and platforms" />;
   }
 
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold">Conversion Funnel</h1>
-        <p className="text-muted-foreground text-sm mt-1">Track CTR, conversion rates, and CPA across content and platforms</p>
+        <p className="text-muted-foreground text-sm mt-1">Track CTR, conversion rates, subscribers and posts across content and platforms</p>
       </div>
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
         {funnelSteps.map((step) => (
           <Card key={step.label} className="glass-card">
             <CardContent className="p-5">
@@ -89,7 +90,7 @@ export default function ConversionFunnel() {
                   <th className="text-left py-3 px-2 font-medium text-muted-foreground">Type</th>
                   <th className="text-right py-3 px-2 font-medium text-muted-foreground">CTR</th>
                   <th className="text-right py-3 px-2 font-medium text-muted-foreground">Conversions</th>
-                  <th className="text-right py-3 px-2 font-medium text-muted-foreground">Revenue</th>
+                  <th className="text-right py-3 px-2 font-medium text-muted-foreground">Impressions</th>
                 </tr>
               </thead>
               <tbody>
@@ -99,7 +100,7 @@ export default function ConversionFunnel() {
                     <td className="py-3 px-2 text-muted-foreground">{c.type}</td>
                     <td className="py-3 px-2 text-right">{c.ctr}</td>
                     <td className="py-3 px-2 text-right">{c.conversions}</td>
-                    <td className="py-3 px-2 text-right font-medium">{c.revenue}</td>
+                    <td className="py-3 px-2 text-right font-medium">{c.impressions}</td>
                   </tr>
                 ))}
               </tbody>
