@@ -1,17 +1,52 @@
-import { Eye, MousePointer, ShoppingCart, Heart, TrendingUp, AlertTriangle, Database } from "lucide-react";
+import { useState } from "react";
+import { Eye, MousePointer, ShoppingCart, Heart, TrendingUp, AlertTriangle, Database, Plus } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { usePages } from "@/contexts/PagesContext";
-import { EmptyDashboard } from "@/components/EmptyDashboard";
 import { Skeleton } from "@/components/ui/skeleton";
+import { AddPageDialog } from "@/components/AddPageDialog";
 
-// TODO: Replace with API call — e.g. fetch("/api/metrics/overview")
-const metricCategories = [
+const emptyMetrics = [
   {
-    title: "Awareness",
-    icon: Eye,
+    title: "Awareness", icon: Eye,
+    metrics: [
+      { label: "Reach", value: "—", change: "" },
+      { label: "Impressions", value: "—", change: "" },
+      { label: "Follower Growth", value: "—", change: "" },
+    ],
+  },
+  {
+    title: "Engagement", icon: MousePointer,
+    metrics: [
+      { label: "Engagement Rate", value: "—", change: "" },
+      { label: "Comments", value: "—", change: "" },
+      { label: "Shares & Saves", value: "—", change: "" },
+    ],
+  },
+  {
+    title: "Conversion", icon: ShoppingCart,
+    metrics: [
+      { label: "CTR", value: "—", change: "" },
+      { label: "Conversion Rate", value: "—", change: "" },
+      { label: "CPA", value: "—", change: "" },
+    ],
+  },
+  {
+    title: "Customer", icon: Heart,
+    metrics: [
+      { label: "CAC", value: "—", change: "" },
+      { label: "LTV", value: "—", change: "" },
+      { label: "Retention Rate", value: "—", change: "" },
+    ],
+  },
+];
+
+// TODO: Replace with API call
+const filledMetrics = [
+  {
+    title: "Awareness", icon: Eye,
     metrics: [
       { label: "Reach", value: "124.5K", change: "+12.3%" },
       { label: "Impressions", value: "342.1K", change: "+8.7%" },
@@ -19,8 +54,7 @@ const metricCategories = [
     ],
   },
   {
-    title: "Engagement",
-    icon: MousePointer,
+    title: "Engagement", icon: MousePointer,
     metrics: [
       { label: "Engagement Rate", value: "4.8%", change: "+0.6%" },
       { label: "Comments", value: "3,241", change: "+15.2%" },
@@ -28,8 +62,7 @@ const metricCategories = [
     ],
   },
   {
-    title: "Conversion",
-    icon: ShoppingCart,
+    title: "Conversion", icon: ShoppingCart,
     metrics: [
       { label: "CTR", value: "3.2%", change: "+0.4%" },
       { label: "Conversion Rate", value: "2.1%", change: "+0.3%" },
@@ -37,8 +70,7 @@ const metricCategories = [
     ],
   },
   {
-    title: "Customer",
-    icon: Heart,
+    title: "Customer", icon: Heart,
     metrics: [
       { label: "CAC", value: "$42.30", change: "-$5.20" },
       { label: "LTV", value: "$284.00", change: "+$18.00" },
@@ -47,7 +79,7 @@ const metricCategories = [
   },
 ];
 
-// TODO: Replace with API call — e.g. fetch("/api/sentiment/trends")
+// TODO: Replace with API call
 const sentimentTrendData = [
   { month: "Jan", positive: 65, negative: 20, neutral: 15 },
   { month: "Feb", positive: 70, negative: 18, neutral: 12 },
@@ -58,7 +90,17 @@ const sentimentTrendData = [
   { month: "Jul", positive: 82, negative: 10, neutral: 8 },
 ];
 
-// TODO: Replace with API call — e.g. fetch("/api/metrics/cac-ltv")
+const emptySentimentData = [
+  { month: "Jan", positive: 0, negative: 0 },
+  { month: "Feb", positive: 0, negative: 0 },
+  { month: "Mar", positive: 0, negative: 0 },
+  { month: "Apr", positive: 0, negative: 0 },
+  { month: "May", positive: 0, negative: 0 },
+  { month: "Jun", positive: 0, negative: 0 },
+  { month: "Jul", positive: 0, negative: 0 },
+];
+
+// TODO: Replace with API call
 const cacLtvData = [
   { month: "Jan", cac: 55, ltv: 210 },
   { month: "Feb", cac: 50, ltv: 230 },
@@ -69,9 +111,19 @@ const cacLtvData = [
   { month: "Jul", cac: 42, ltv: 284 },
 ];
 
+const emptyCacLtvData = [
+  { month: "Jan", cac: 0, ltv: 0 },
+  { month: "Feb", cac: 0, ltv: 0 },
+  { month: "Mar", cac: 0, ltv: 0 },
+  { month: "Apr", cac: 0, ltv: 0 },
+  { month: "May", cac: 0, ltv: 0 },
+  { month: "Jun", cac: 0, ltv: 0 },
+  { month: "Jul", cac: 0, ltv: 0 },
+];
+
 const quickLinks = [
   { label: "Sentiment Analysis", path: "/dashboard/sentiment", icon: TrendingUp },
-  { label: "Churn Predictions", path: "/dashboard/churn", icon: AlertTriangle },
+  { label: "Churn Prediction", path: "/dashboard/churn", icon: AlertTriangle },
   { label: "User Segmentation", path: "/dashboard/segmentation", icon: Database },
   { label: "Conversion Funnel", path: "/dashboard/funnel", icon: ShoppingCart },
 ];
@@ -79,6 +131,12 @@ const quickLinks = [
 export default function Dashboard() {
   const navigate = useNavigate();
   const { pages, currentPage, loading } = usePages();
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const hasPages = pages.length > 0;
+  const metricCategories = hasPages ? filledMetrics : emptyMetrics;
+  const chartSentiment = hasPages ? sentimentTrendData : emptySentimentData;
+  const chartCacLtv = hasPages ? cacLtvData : emptyCacLtvData;
 
   if (loading) {
     return (
@@ -91,15 +149,26 @@ export default function Dashboard() {
     );
   }
 
-  if (pages.length === 0) return <EmptyDashboard />;
-
   return (
     <div className="space-y-6 animate-in fade-in-0 duration-300">
-      <div>
-        <h1 className="text-2xl font-bold">{currentPage?.page_name ?? "Dashboard Overview"}</h1>
-        <p className="text-muted-foreground text-sm mt-1">
-          Monitor social media intelligence and customer behavior metrics for this page
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold">{currentPage?.page_name ?? "Dashboard Overview"}</h1>
+          <p className="text-muted-foreground text-sm mt-1">
+            {hasPages
+              ? "Monitor social media intelligence and customer behavior metrics for this page"
+              : "Add a social media page to start seeing your analytics"}
+          </p>
+        </div>
+        {!hasPages && (
+          <>
+            <Button onClick={() => setDialogOpen(true)} className="gap-2">
+              <Plus className="h-4 w-4" />
+              Add Page
+            </Button>
+            <AddPageDialog open={dialogOpen} onOpenChange={setDialogOpen} />
+          </>
+        )}
       </div>
 
       {/* Metric categories */}
@@ -119,9 +188,9 @@ export default function Dashboard() {
                 <div key={m.label} className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium">{m.label}</p>
-                    <p className="text-xs text-success">{m.change}</p>
+                    {m.change && <p className="text-xs text-success">{m.change}</p>}
                   </div>
-                  <span className="text-lg font-semibold">{m.value}</span>
+                  <span className={`text-lg font-semibold ${!hasPages ? "text-muted-foreground" : ""}`}>{m.value}</span>
                 </div>
               ))}
             </CardContent>
@@ -137,7 +206,7 @@ export default function Dashboard() {
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={240}>
-              <AreaChart data={sentimentTrendData}>
+              <AreaChart data={chartSentiment}>
                 <defs>
                   <linearGradient id="dashPositive" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="hsl(152, 56%, 45%)" stopOpacity={0.3} />
@@ -156,6 +225,9 @@ export default function Dashboard() {
                 <Area type="monotone" dataKey="negative" stroke="hsl(0, 84%, 60%)" fill="url(#dashNegative)" strokeWidth={2} />
               </AreaChart>
             </ResponsiveContainer>
+            {!hasPages && (
+              <p className="text-center text-muted-foreground text-xs mt-2">No data available</p>
+            )}
           </CardContent>
         </Card>
         <Card className="glass-card">
@@ -164,7 +236,7 @@ export default function Dashboard() {
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={240}>
-              <BarChart data={cacLtvData}>
+              <BarChart data={chartCacLtv}>
                 <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                 <XAxis dataKey="month" stroke="hsl(var(--muted-foreground))" fontSize={12} />
                 <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} />
@@ -173,6 +245,9 @@ export default function Dashboard() {
                 <Bar dataKey="ltv" fill="hsl(152, 56%, 45%)" radius={[4, 4, 0, 0]} name="LTV" />
               </BarChart>
             </ResponsiveContainer>
+            {!hasPages && (
+              <p className="text-center text-muted-foreground text-xs mt-2">No data available</p>
+            )}
           </CardContent>
         </Card>
       </div>
