@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, Crown, Eye, ShoppingCart } from "lucide-react";
-import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, Cell } from "recharts";
+import { Users, Crown, Eye, ShoppingCart, Plus } from "lucide-react";
+import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from "recharts";
 import { usePages } from "@/contexts/PagesContext";
-import { AnalyticsEmptyState } from "@/components/AnalyticsEmptyState";
+import { Button } from "@/components/ui/button";
+import { AddPageDialog } from "@/components/AddPageDialog";
 
 const segments = [
   { icon: Crown, title: "High-Value Customers", desc: "Frequent buyers with high LTV. Engage regularly and drive revenue.", color: "text-accent", bg: "bg-accent/10", count: 1243, pct: "31%" },
@@ -30,16 +32,24 @@ const CLUSTER_COLORS = ["hsl(var(--accent))", "hsl(45, 93%, 47%)", "hsl(152, 56%
 
 export default function UserSegmentation() {
   const { pages } = usePages();
-
-  if (pages.length === 0) {
-    return <AnalyticsEmptyState title="User Segmentation" description="AI-powered customer clustering using K-Means and behavioral features" />;
-  }
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const hasPages = pages.length > 0;
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold">User Segmentation</h1>
-        <p className="text-muted-foreground text-sm mt-1">AI-powered customer clustering using K-Means and behavioral features</p>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold">User Segmentation</h1>
+          <p className="text-muted-foreground text-sm mt-1">AI-powered customer clustering using K-Means and behavioral features</p>
+        </div>
+        {!hasPages && (
+          <>
+            <Button onClick={() => setDialogOpen(true)} className="gap-2">
+              <Plus className="h-4 w-4" /> Add Page
+            </Button>
+            <AddPageDialog open={dialogOpen} onOpenChange={setDialogOpen} />
+          </>
+        )}
       </div>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -52,8 +62,10 @@ export default function UserSegmentation() {
               <h3 className="font-semibold text-sm mb-1">{s.title}</h3>
               <p className="text-xs text-muted-foreground">{s.desc}</p>
               <div className="mt-4 flex items-baseline gap-2">
-                <span className="text-2xl font-bold">{s.count.toLocaleString()}</span>
-                <span className="text-xs text-muted-foreground">({s.pct})</span>
+                <span className={`text-2xl font-bold ${!hasPages ? "text-muted-foreground" : ""}`}>
+                  {hasPages ? s.count.toLocaleString() : "—"}
+                </span>
+                {hasPages && <span className="text-xs text-muted-foreground">({s.pct})</span>}
               </div>
             </CardContent>
           </Card>
@@ -71,12 +83,17 @@ export default function UserSegmentation() {
               <XAxis dataKey="x" name="Recency" stroke="hsl(var(--muted-foreground))" fontSize={12} label={{ value: "Days Since Last Action", position: "insideBottom", offset: -5, fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
               <YAxis dataKey="y" name="Engagement" stroke="hsl(var(--muted-foreground))" fontSize={12} label={{ value: "Engagement Score", angle: -90, position: "insideLeft", fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
               <Tooltip contentStyle={{ backgroundColor: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "8px", fontSize: "12px" }} />
-              <Scatter data={clusterData.filter(d => d.cluster === "High-Value")} fill={CLUSTER_COLORS[0]} name="High-Value" />
-              <Scatter data={clusterData.filter(d => d.cluster === "Passive")} fill={CLUSTER_COLORS[1]} name="Passive" />
-              <Scatter data={clusterData.filter(d => d.cluster === "Potential")} fill={CLUSTER_COLORS[2]} name="Potential" />
-              <Scatter data={clusterData.filter(d => d.cluster === "Churned")} fill={CLUSTER_COLORS[3]} name="Churned" />
+              {hasPages && (
+                <>
+                  <Scatter data={clusterData.filter(d => d.cluster === "High-Value")} fill={CLUSTER_COLORS[0]} name="High-Value" />
+                  <Scatter data={clusterData.filter(d => d.cluster === "Passive")} fill={CLUSTER_COLORS[1]} name="Passive" />
+                  <Scatter data={clusterData.filter(d => d.cluster === "Potential")} fill={CLUSTER_COLORS[2]} name="Potential" />
+                  <Scatter data={clusterData.filter(d => d.cluster === "Churned")} fill={CLUSTER_COLORS[3]} name="Churned" />
+                </>
+              )}
             </ScatterChart>
           </ResponsiveContainer>
+          {!hasPages && <p className="text-center text-muted-foreground text-xs mt-2">No data available</p>}
         </CardContent>
       </Card>
 
@@ -86,7 +103,7 @@ export default function UserSegmentation() {
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={240}>
-            <BarChart data={behaviorData} layout="vertical">
+            <BarChart data={hasPages ? behaviorData : behaviorData.map(b => ({ ...b, conversionLift: 0 }))} layout="vertical">
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
               <XAxis type="number" stroke="hsl(var(--muted-foreground))" fontSize={12} label={{ value: "Conversion Lift (x)", position: "insideBottom", offset: -5, fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
               <YAxis dataKey="action" type="category" stroke="hsl(var(--muted-foreground))" fontSize={12} width={80} />
@@ -94,6 +111,7 @@ export default function UserSegmentation() {
               <Bar dataKey="conversionLift" fill="hsl(var(--accent))" radius={[0, 4, 4, 0]} />
             </BarChart>
           </ResponsiveContainer>
+          {!hasPages && <p className="text-center text-muted-foreground text-xs mt-2">No data available</p>}
         </CardContent>
       </Card>
     </div>
