@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SentimentChart } from "@/components/SentimentChart";
-import { TrendingUp, TrendingDown, Minus } from "lucide-react";
+import { TrendingUp, TrendingDown, Minus, Plus } from "lucide-react";
 import { usePages } from "@/contexts/PagesContext";
-import { AnalyticsEmptyState } from "@/components/AnalyticsEmptyState";
 import { PostSelector } from "@/components/PostSelector";
+import { Button } from "@/components/ui/button";
+import { AddPageDialog } from "@/components/AddPageDialog";
 
 const demoPosts = [
   { id: "p1", title: "Summer Collection Launch" },
@@ -17,6 +18,12 @@ const allSentiment = [
   { label: "Positive", value: 68, color: "bg-success" },
   { label: "Neutral", value: 22, color: "bg-warning" },
   { label: "Negative", value: 10, color: "bg-destructive" },
+];
+
+const emptySentiment = [
+  { label: "Positive", value: 0, color: "bg-success" },
+  { label: "Neutral", value: 0, color: "bg-warning" },
+  { label: "Negative", value: 0, color: "bg-destructive" },
 ];
 
 const postSentiment: Record<string, typeof allSentiment> = {
@@ -50,15 +57,26 @@ const allTopics = [
   { topic: "User Experience", sentiment: 88, trend: "up" as const },
 ];
 
+const emptyTopics = [
+  { topic: "Product Quality", sentiment: 0, trend: "neutral" as const },
+  { topic: "Customer Service", sentiment: 0, trend: "neutral" as const },
+  { topic: "Delivery Speed", sentiment: 0, trend: "neutral" as const },
+  { topic: "Pricing", sentiment: 0, trend: "neutral" as const },
+  { topic: "User Experience", sentiment: 0, trend: "neutral" as const },
+];
+
 export default function SentimentAnalysis() {
   const { pages } = usePages();
   const [selectedPost, setSelectedPost] = useState<string | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
-  if (pages.length === 0) {
-    return <AnalyticsEmptyState title="Sentiment Analysis" description="Deep dive into customer sentiment trends and patterns" />;
-  }
-
-  const sentimentBreakdown = selectedPost ? (postSentiment[selectedPost] ?? allSentiment) : allSentiment;
+  const hasPages = pages.length > 0;
+  const sentimentBreakdown = !hasPages
+    ? emptySentiment
+    : selectedPost
+      ? (postSentiment[selectedPost] ?? allSentiment)
+      : allSentiment;
+  const topics = hasPages ? allTopics : emptyTopics;
 
   return (
     <div className="space-y-6">
@@ -67,7 +85,16 @@ export default function SentimentAnalysis() {
           <h1 className="text-2xl font-bold">Sentiment Analysis</h1>
           <p className="text-muted-foreground text-sm mt-1">Deep dive into customer sentiment trends and patterns</p>
         </div>
-        <PostSelector posts={demoPosts} selectedPost={selectedPost} onSelectPost={setSelectedPost} />
+        {hasPages ? (
+          <PostSelector posts={demoPosts} selectedPost={selectedPost} onSelectPost={setSelectedPost} />
+        ) : (
+          <>
+            <Button onClick={() => setDialogOpen(true)} className="gap-2">
+              <Plus className="h-4 w-4" /> Add Page
+            </Button>
+            <AddPageDialog open={dialogOpen} onOpenChange={setDialogOpen} />
+          </>
+        )}
       </div>
 
       <div className="grid sm:grid-cols-3 gap-4">
@@ -78,9 +105,11 @@ export default function SentimentAnalysis() {
                 <span className="text-sm text-muted-foreground">{s.label}</span>
                 <div className={`w-3 h-3 rounded-full ${s.color}`} />
               </div>
-              <p className="text-3xl font-bold">{s.value}%</p>
+              <p className={`text-3xl font-bold ${!hasPages ? "text-muted-foreground" : ""}`}>
+                {hasPages ? `${s.value}%` : "—"}
+              </p>
               <div className="mt-3 h-2 rounded-full bg-secondary">
-                <div className={`h-full rounded-full ${s.color}`} style={{ width: `${s.value}%` }} />
+                <div className={`h-full rounded-full ${s.color} transition-all`} style={{ width: `${s.value}%` }} />
               </div>
             </CardContent>
           </Card>
@@ -96,16 +125,18 @@ export default function SentimentAnalysis() {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {allTopics.map((t) => (
+              {topics.map((t) => (
                 <div key={t.topic} className="flex items-center gap-4">
                   <span className="w-36 text-sm font-medium">{t.topic}</span>
                   <div className="flex-1 h-3 rounded-full bg-secondary">
                     <div
-                      className={`h-full rounded-full ${t.sentiment >= 80 ? "bg-success" : t.sentiment >= 60 ? "bg-warning" : "bg-destructive"}`}
+                      className={`h-full rounded-full transition-all ${t.sentiment >= 80 ? "bg-success" : t.sentiment >= 60 ? "bg-warning" : "bg-destructive"}`}
                       style={{ width: `${t.sentiment}%` }}
                     />
                   </div>
-                  <span className="text-sm font-medium w-12 text-right">{t.sentiment}%</span>
+                  <span className={`text-sm font-medium w-12 text-right ${!hasPages ? "text-muted-foreground" : ""}`}>
+                    {hasPages ? `${t.sentiment}%` : "—"}
+                  </span>
                   {t.trend === "up" ? (
                     <TrendingUp className="h-4 w-4 text-success" />
                   ) : t.trend === "down" ? (
