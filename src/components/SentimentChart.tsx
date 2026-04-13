@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
-const data = [
+const filledData = [
   { month: "Jan", positive: 65, negative: 20, neutral: 15 },
   { month: "Feb", positive: 70, negative: 18, neutral: 12 },
   { month: "Mar", positive: 62, negative: 25, neutral: 13 },
@@ -11,7 +11,23 @@ const data = [
   { month: "Jul", positive: 82, negative: 10, neutral: 8 },
 ];
 
-export function SentimentChart() {
+const emptyData = [
+  { month: "Jan", positive: 0, negative: 0, neutral: 0 },
+  { month: "Feb", positive: 0, negative: 0, neutral: 0 },
+  { month: "Mar", positive: 0, negative: 0, neutral: 0 },
+  { month: "Apr", positive: 0, negative: 0, neutral: 0 },
+  { month: "May", positive: 0, negative: 0, neutral: 0 },
+  { month: "Jun", positive: 0, negative: 0, neutral: 0 },
+  { month: "Jul", positive: 0, negative: 0, neutral: 0 },
+];
+
+interface SentimentChartProps {
+  hasPages?: boolean;
+}
+
+export function SentimentChart({ hasPages = true }: SentimentChartProps) {
+  const data = hasPages ? filledData : emptyData;
+
   return (
     <Card className="glass-card">
       <CardHeader>
@@ -45,6 +61,7 @@ export function SentimentChart() {
             <Area type="monotone" dataKey="negative" stroke="hsl(0, 84%, 60%)" fill="url(#colorNegative)" strokeWidth={2} />
           </AreaChart>
         </ResponsiveContainer>
+        {!hasPages && <p className="text-center text-muted-foreground text-xs mt-2">No data available</p>}
       </CardContent>
     </Card>
   );

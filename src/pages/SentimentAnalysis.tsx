@@ -8,10 +8,10 @@ import { Button } from "@/components/ui/button";
 import { AddPageDialog } from "@/components/AddPageDialog";
 
 const demoPosts = [
-  { id: "p1", title: "Summer Collection Launch" },
-  { id: "p2", title: "Behind the Scenes Video" },
-  { id: "p3", title: "Customer Testimonial" },
-  { id: "p4", title: "Product Tutorial Reel" },
+  { id: "p1", title: "Summer Collection Launch", caption: "Discover our vibrant new summer styles 🌞 Shop now!", coverUrl: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=100&h=100&fit=crop" },
+  { id: "p2", title: "Behind the Scenes Video", caption: "Take a peek behind the curtain of our latest shoot 🎬", coverUrl: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=100&h=100&fit=crop" },
+  { id: "p3", title: "Customer Testimonial", caption: "Hear what our amazing customers have to say about us ❤️", coverUrl: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=100&h=100&fit=crop" },
+  { id: "p4", title: "Product Tutorial Reel", caption: "Learn how to style our best sellers in 60 seconds ✨", coverUrl: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=100&h=100&fit=crop" },
 ];
 
 const allSentiment = [
@@ -116,7 +116,7 @@ export default function SentimentAnalysis() {
         ))}
       </div>
 
-      <SentimentChart />
+      <SentimentChart hasPages={hasPages} />
 
       {!selectedPost && (
         <Card className="glass-card">
