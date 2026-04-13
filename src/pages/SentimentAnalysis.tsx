@@ -116,7 +116,7 @@ export default function SentimentAnalysis() {
         ))}
       </div>
 
-      <SentimentChart />
+      <SentimentChart hasPages={hasPages} />
 
       {!selectedPost && (
         <Card className="glass-card">
