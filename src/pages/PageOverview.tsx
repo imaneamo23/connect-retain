@@ -139,6 +139,35 @@ export default function PageOverview() {
             </div>
           </CardContent>
         </Card>
+
+        <Card className="glass-card">
+          <CardHeader>
+            <CardTitle className="text-base">Comments Sentiment</CardTitle>
+            <p className="text-xs text-muted-foreground">Sentiment breakdown for this post's comments</p>
+          </CardHeader>
+          <CardContent>
+            {(() => {
+              const data = [
+                { name: "Positive", value: selectedPost.sentiment.positive },
+                { name: "Negative", value: selectedPost.sentiment.negative },
+                { name: "Neutral", value: selectedPost.sentiment.neutral },
+              ];
+              return (
+                <ResponsiveContainer width="100%" height={280}>
+                  <PieChart>
+                    <Pie data={data} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={60} outerRadius={100} paddingAngle={2}>
+                      {data.map((entry) => (
+                        <Cell key={entry.name} fill={SENTIMENT_COLORS[entry.name]} />
+                      ))}
+                    </Pie>
+                    <Tooltip formatter={(value: number) => `${value}%`} contentStyle={{ backgroundColor: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "8px", fontSize: "12px" }} />
+                    <Legend />
+                  </PieChart>
+                </ResponsiveContainer>
+              );
+            })()}
+          </CardContent>
+        </Card>
       </div>
     );
   }
