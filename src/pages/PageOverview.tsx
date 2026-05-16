@@ -36,16 +36,23 @@ interface PostItem {
   comments: number;
   shares: number;
   saves: number;
+  sentiment: { positive: number; negative: number; neutral: number };
 }
 
 const posts: PostItem[] = [
-  { id: "1", title: "Summer Collection Launch", date: "Aug 12, 2025", type: "Video", views: "24.5K", likes: 1842, comments: 234, shares: 156, saves: 89 },
-  { id: "2", title: "Behind the Scenes Video", date: "Aug 10, 2025", type: "Video", views: "18.2K", likes: 1456, comments: 178, shares: 102, saves: 67 },
-  { id: "3", title: "Customer Testimonial", date: "Aug 8, 2025", type: "Image", views: "12.1K", likes: 987, comments: 145, shares: 78, saves: 45 },
-  { id: "4", title: "Product Tutorial Reel", date: "Aug 5, 2025", type: "Video", views: "31.4K", likes: 2341, comments: 312, shares: 198, saves: 134 },
-  { id: "5", title: "Tips & Tricks Thread", date: "Aug 3, 2025", type: "Text", views: "8.7K", likes: 654, comments: 98, shares: 45, saves: 32 },
-  { id: "6", title: "New Arrivals Story", date: "Aug 1, 2025", type: "Story", views: "15.3K", likes: 1123, comments: 89, shares: 67, saves: 51 },
+  { id: "1", title: "Summer Collection Launch", date: "Aug 12, 2025", type: "Video", views: "24.5K", likes: 1842, comments: 234, shares: 156, saves: 89, sentiment: { positive: 68, negative: 14, neutral: 18 } },
+  { id: "2", title: "Behind the Scenes Video", date: "Aug 10, 2025", type: "Video", views: "18.2K", likes: 1456, comments: 178, shares: 102, saves: 67, sentiment: { positive: 72, negative: 10, neutral: 18 } },
+  { id: "3", title: "Customer Testimonial", date: "Aug 8, 2025", type: "Image", views: "12.1K", likes: 987, comments: 145, shares: 78, saves: 45, sentiment: { positive: 81, negative: 6, neutral: 13 } },
+  { id: "4", title: "Product Tutorial Reel", date: "Aug 5, 2025", type: "Video", views: "31.4K", likes: 2341, comments: 312, shares: 198, saves: 134, sentiment: { positive: 64, negative: 20, neutral: 16 } },
+  { id: "5", title: "Tips & Tricks Thread", date: "Aug 3, 2025", type: "Text", views: "8.7K", likes: 654, comments: 98, shares: 45, saves: 32, sentiment: { positive: 55, negative: 25, neutral: 20 } },
+  { id: "6", title: "New Arrivals Story", date: "Aug 1, 2025", type: "Story", views: "15.3K", likes: 1123, comments: 89, shares: 67, saves: 51, sentiment: { positive: 70, negative: 12, neutral: 18 } },
 ];
+
+const SENTIMENT_COLORS: Record<string, string> = {
+  Positive: "hsl(152, 56%, 45%)",
+  Negative: "hsl(0, 84%, 60%)",
+  Neutral: "hsl(220, 9%, 60%)",
+};
 
 export default function PageOverview() {
   const { pages } = usePages();
