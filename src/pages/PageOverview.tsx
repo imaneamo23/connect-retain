@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, FileText, Clock, Activity, TrendingUp, TrendingDown, Eye, Heart, Share2, MessageCircle, ChevronRight, ArrowLeft, Plus } from "lucide-react";
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from "recharts";
 import { usePages } from "@/contexts/PagesContext";
 import { Button } from "@/components/ui/button";
 import { AddPageDialog } from "@/components/AddPageDialog";
