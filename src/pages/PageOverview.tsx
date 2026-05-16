@@ -152,10 +152,31 @@ export default function PageOverview() {
                 { name: "Negative", value: selectedPost.sentiment.negative },
                 { name: "Neutral", value: selectedPost.sentiment.neutral },
               ];
+              const total = data.reduce((sum, d) => sum + d.value, 0);
+              if (selectedPost.comments === 0 || total === 0) {
+                return (
+                  <div className="py-12 text-center text-muted-foreground text-sm">
+                    لا يوجد معلومات
+                  </div>
+                );
+              }
+              const renderLabel = ({ name, value }: { name: string; value: number }) =>
+                `${name}: ${value}%`;
               return (
-                <ResponsiveContainer width="100%" height={280}>
+                <ResponsiveContainer width="100%" height={300}>
                   <PieChart>
-                    <Pie data={data} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={60} outerRadius={100} paddingAngle={2}>
+                    <Pie
+                      data={data}
+                      dataKey="value"
+                      nameKey="name"
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={60}
+                      outerRadius={100}
+                      paddingAngle={2}
+                      label={renderLabel}
+                      labelLine={{ stroke: "hsl(var(--muted-foreground))" }}
+                    >
                       {data.map((entry) => (
                         <Cell key={entry.name} fill={SENTIMENT_COLORS[entry.name]} />
                       ))}
